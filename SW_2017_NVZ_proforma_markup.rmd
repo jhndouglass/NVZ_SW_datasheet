@@ -1,0 +1,451 @@
+---
+title: "`r nvz.name` NVZ surface water designation data sheet"
+linkcolor: blue
+output: 
+    pdf_document: 
+      fig_caption: yes
+      fig_height: 4
+      fig_width: 4
+      number_sections: yes
+      toc: yes
+      toc_depth: 4
+header-includes:
+- \usepackage{fancyhdr}
+- \pagestyle{fancy}
+- \fancyfoot[CO,CE]{NVZ `r nvz.id` - `r nvz.name`}
+- \fancyfoot[LE,RO]{\thepage}
+abstract: This document contains a summary of the evidence used to designate NVZ `r nvz.id` - `r nvz.name`. It was produced on `r format(Sys.Date(), "%d/%m/%Y")` by the Environment Agency on behalf of the Secretary of State for the Environment. \newline \newline `r nvz.name` is `r nvz.type1.text` designation. Our assessment of monitoring data shows that water quality in this NVZ has `r mon.change.text` in the 2017 NVZ review period compared to the previous two NVZ reviews. Our modelling assessment shows that water quality in this NVZ has `r mod.change.text` in the 2017 NVZ review period compared to the previous two NVZ reviews. `r nvz.des.text` \newline \newline There `r fail.count.text` in the waterbody that designates this NVZ, and in total `r fail.count.upstream` polluted sample points in the entire designated NVZ. Based on our assessment of monitoring data we are `r mon.conf.text`. \newline \newline Based on our modelling assessment we are `r mod.conf.text`. \newline \newline The contribution of agriculture to the observed nitrate pollution in this NVZ has been assessed and we are confident that agriculture is an important contributor to nitrate pollution.
+---
+
+```{r, echo = FALSE}
+library(knitr)
+library(markdown)
+library(rmarkdown)
+library(png)
+library(grid)
+```
+
+\newpage  
+
+The maps presented here were correct as of the date given above. All maps are presented as watershed boundaries, the final NVZ extent is mapped to field boundaries. As the appeals process progresses there will be further changes to NVZ extent, please visit [www.gov.uk/wiyby/nvz](www.gov.uk/wiyby/nvz) for the most up to date NVZ extent maps.
+
+---
+
+The maps featured in this report are subject to at least one of the following copyright statements;  
+&copy; Crown copyright and database rights 2016 Ordnance Survey 100024198   
+&copy; Environment Agency copyright and/or database rights 2016. All rights reserved.  
+&copy; Centre for Ecology and Hydrology 2016.   
+
+
+\newpage
+
+# Introduction
+
+**NVZ name: `r nvz.name`**  
+**NVZ ID: `r nvz.id`**  
+
+This document presents the evidence in support of this area as a Nitrate Vulnerable Zone (NVZ) as of 1^st^ January 2017.  This designation is based on the Surface Water methodology, which uses a combination of monitored and modelled evidence  to determine if river waterbodies are polluted or at risk of being polluted.  
+
+## Introduction summary
+
+This document will summarise why this area is considered to drain to a watercourse that is polluted or at risk of being polluted.  For more details on the method, please refer to the full surface water methodology -- [www.gov.uk/nvz_test_xyz](www.gov.uk/nvz_test_xyz).  
+
+
+## Core principles  
+
+1. Each NVZ review takes the previous designations as the starting point and most designations are continuations of those designations.
+2. Evidence of pollution is based on a combination of monitoring data, recent and longer term trends, and modelled data.
+3. Water is polluted if our monitoring or modelling evidence, or a combination of the two, confidently assesses that the 95^th^ percentile[^1] concentration of nitrate exceeds 50 mgl^-1^ (as nitrate (NO~3~)).
+4. Water is at risk of being polluted if our monitoring evidence indicates 95^th^ percentile concentrations will exceed 50 mgl^-1^ nitrate in the near future (2020).
+5. We include all inorganic nitrogen (N) compounds in our assessment, not just nitrate. 50 mgl^-1^ nitrate (as NO~3~) is equivalent to 11.3 mgl^-1^ nitrate (as N). As nitrogen can readily transform we include all commonly monitored forms of inorganic nitrogen, nitrate, nitrite and ammonium (referred to as Total Inorganic Nitrogen (TIN) when summed). All water quality data presented below is TIN and is compared to 11.3 mgl^-1^ to determine if the water is polluted or at risk of pollution.
+6. If a sample point is downstream of a sewage treatment works or other point source consented discharge[^2] we assess whether the sample point is representative of the wider water quality of the catchment, in terms of nitrate. We do not automatically discount such sample points, a comprehensive national and local screening procedure is used to determine if a sample point should be removed from our analysis.
+7. We use the Water Framework Directive river waterbodies as our units of assessment.  If one part of that unit is considered to be polluted (or at risk of being polluted) then the entire unit is designated.  This is the case even if the sole monitoring point that shows evidence of poor water quality is in the upper (upstream) section of that unit and downstream monitoring points show no pollution. For 'catchment' designations (see table 1) the designated NVZ is all land that drains to the designating waterbody. For 'waterbody' designations the designated NVZ covers only the designating waterbody.
+8. All existing designation are continued unless there we can be confident that the water is no longer polluted and is not at risk of becoming polluted. We have already considered whether existing designations are eligible for removal. 
+
+We review the evidence every four years, and we believe that NVZ designation is justified in the area that is described in this data sheet. 
+
+[^1]: A 95^th^ percentile is the value exceeded only 5% of the time. It is used instead of a maximum value as it more stable and less sensitive to extreme events.
+[^2]: Consented discharge means all point source discharges that are consented to discharge to controlled waters by the Environment Agency. This includes sewage treatment works (sometimes also refereed to as waste water treatment works), industrial discharges, private sewage discharges, intermittent sewage discharges, landfills & all other discharge types.
+
+\newpage
+
+# Summary of evidence
+
+## Basic details
+
+-------------------------------------------- ---------------------
+NVZ
+-------------------------------------------- ---------------------
+NVZ Name                                     `r nvz.name`
+
+NVZ ID                                       `r nvz.id`
+
+Area (km^2^)                                 `r nvz.area`
+
+NVZ type (existing/new)                      `r nvz.type1`
+
+NVZ type (catchment/waterbody)               `r nvz.type2`
+
+Designating WFD waterbody                    `r nvz.wb`
+
+% of this NVZ previously designated as 
+surface water NVZ                            `r nvz.prev.sw`
+
+% of this NVZ previously designated as 
+any NVZ                                      `r nvz.prev`
+-------------------------------------------- ---------------------
+
+: Designation summary
+
+Designations under the surface water method use a combination of monitored and modelled information.  Water quality data from our monitoring and modelling assessments are put into one of six classes, where enough data is available, that reflect not only by how much the 95^th^ percentile exceeds 11.3 mgl^-1^ but also how  confident we are that it will exceed 11.3 mgl^-1^. When we combine the monitoring and modelled data, we use the following matrix (figure 1) to identify those waters that are polluted or at risk of being polluted.  Note that a score of 4  or higher means that the 95^th^ percentile exceeds 11.3 mgl^-1^. The combinations marked in red indicate a new designation should be recommended where there is not an existing NVZ designation. Where there is already an NVZ designation, the designation is continued unless there is sufficient evidence for de-designation, see the full surface water NVZ method ([www.gov.uk/nvz_test_xyz](www.gov.uk/nvz_test_xyz)) for more information on de-designation.
+
+![Evidence matrix used to determine if waterbody is subject to nitrate pollution](matrix.png)
+
+The 1 to 6 classes used in the matrix are explained in table 2. A class of zero is given where there are no suitable sample points within the waterbody, so a monitoring class can't be given, or where the waterbody was not large enough to be used in the modelling assessment.
+
+\newpage
+
+--------- -------------------------------------------------
+Class     Description
+--------- -------------------------------------------------
+1         High confidence 95^th^ percentile concentration is **below** 11.3 mgl^-1^
+
+2         Moderate confidence 95^th^ percentile concentration is **below** 11.3 mgl^-1^
+
+3         Low confidence 95^th^ percentile concentration is **below** 11.3 mgl^-1^
+
+4         Low confidence 95^th^ percentile concentration is *above* 11.3 mgl^-1^
+
+5         Moderate confidence 95^th^ percentile concentration is *above* 11.3 mgl^-1^
+
+6         High confidence 95^th^ percentile concentration is *above* 11.3 mgl^-1^
+
+0         Monitoring or modelling classification not available 
+--------- -------------------------------------------------
+
+: Matrix class descriptions
+
+The designating waterbody has had the following `r main.wb.scores.text` in the last three NVZ reviews (table 3);
+
+```{r, echo = FALSE, results = "asis"}
+mon.scores <- c(mon.2009, mon.2013, mon.2017)
+mod.scores <- c(mod.2009, mod.2013, mod.2017)
+scores.tab <- data.frame(mon.scores, mod.scores, row.names = c(2009, 2013, 2017))
+names(scores.tab) <- c("Monitoring scores", "Modelling scores")
+kable(scores.tab, caption = "Matrix scores for the last three NVZ reviews")
+```
+
+`r nvz.name` is `r nvz.type1.text` designation. Our assessment of monitoring data shows that water quality in this NVZ has `r mon.change.text` in the 2017 NVZ review period compared to the previous two NVZ reviews. Our modelling assessment shows that water quality in this NVZ has `r mod.change.text` in the 2017 NVZ review period compared to the previous two NVZ reviews. `r nvz.des.text`
+
+The figure 2 shows the area covered by this NVZ.  
+
+*	The pink outline indicates the extent of this NVZ.
+*	The yellow area shows any surrounding area covered by other surface water NVZs.
+*	The black hatched area shows the designating waterbody that is either polluted or at risk of being polluted.
+
+
+![Overview of designated catchment](`r overview.map`)  
+
+
+\newpage 
+
+## Monitoring Evidence
+
+------------------------------------------------------- --------------------------------
+NVZ
+------------------------------------------------------- --------------------------------
+Number of sample points in the designating
+waterbody                                               `r smpt.count`
+
+Number of sample points with 95^th^ percentile TIN 
+greater than 11.3 mgl^-1^ in the designating waterbody  `r fail.count`
+
+Number of sample points with 95^th^ percentile TIN 
+greater than 11.3 mgl^-1^ in the designated NVZ         `r fail.count.upstream`
+
+Most polluted sample point in the designating 
+waterbody                                               `r paste0(worst, " - ", worst.name)`
+
+Current monitored 95^th^ percentile 
+concentration (class)                                   `r paste0(mon.conc, " mgl^-1^ (", mon.2017, ")")`
+
+High confidence lower and upper bounds for current 
+monitored 95^th^ percentile concentration               `r mon.conc.l95` mgl^-1^ - `r mon.conc.u95`  mgl^-1^
+
+Moderate confidence lower and upper bounds for current 
+monitored 95^th^ percentile concentration               `r mon.conc.l75 `  mgl^-1^ - `r mon.conc.u75`  mgl^-1^
+
+Trend (future) 95^th^ 
+percentile concentration (class)                        `r paste0(trend.conc, " mgl^-1^ (", trend.2017, ")")`
+
+High confidence lower and upper bounds for trend 
+95^th^ percentile concentration                         `r trend.conc.l95`  mgl^-1^ - `r trend.conc.u95`  mgl^-1^
+
+Moderate confidence lower and upper bounds for trend
+95^th^ percentile concentration                         `r trend.conc.l75`  mgl^-1^ - `r trend.conc.u75`  mgl^-1^
+
+------------------------------------------------------- --------------------------------
+
+: Summary of monitoring evidence
+
+There `r fail.count.text` in the land draining to this water.  Figure 3 shows the time series of concentrations for the most polluted sample point in the designating waterbody.
+
+![TIN as N time series for `r worst` ](`r worst.graph`)
+
+In figure 3;
+
+*	The circles represent each sample taken since 1990.
+*	The dark blue line represents the 95^th^ percentile over time.
+*	`r curr.est.text`
+*   The right most dashed blue line represents mid-2020. Where is it crosses the dark blue line is the future (2020) 95^th^ percentile.
+*	The blue shaded areas from 2015 onwards represent the uncertainty in the future 95^th^ percentile. There is a 75% probability that the future 95^th^ percentile lies within the dark blue shaded area and a 95% probability that the future 95^th^ percentile lies within the light blue shaded area.
+
+`r fail.count.text.us`
+
+Figure 4 shows the location of the monitoring points in the designating waterbody. The monitoring points are shown as coloured points, the colours show the monitoring class (1-6) of each point.  The monitoring score per sample point is based on the highest of the current and future 95^th^ percentiles. The monitoring score per catchment is taken from the most polluted sample point in the designating waterbody.  
+
+In figure 4, the small crosses represent the outlets of consented discharges[^2]. Any monitoring point that is too close (within the mixing zone) to a consented discharge of nitrogen compounds and therefore not representative of the water quality of the waterbody or is otherwise not representative of the water quality within the waterbody is excluded from the analysis. There is a national and local screening procedure to assess whether this is the case.
+
+![Overview of monitoring locations and classes with point source locations](`r monitoring.map`)
+
+\newpage
+
+## Modelling Evidence
+
+Our modelling (refereed to as the land use model) predicts the underlying risk of pollution from the land use within the designated NVZ catchment. It allows us to assess whether a waterbody is polluted even if we have no monitoring or where the monitoring data is not suitable for use in this assessment.
+
+The land use model uses information on;  
+
+*	Agricultural N losses
+*	Consented discharges 
+*	Diffuse urban N losses
+*	Residential properties not connected to sewer networks
+
+The water quality data used in the [monitoring evidence](#monitoring-evidence) chapter is also used in the development of the land use model.
+
+If table 5 contains NAs (Not Available) then modelled data was not used in the designation of this NVZ. The most likely reason modelled data was not used is that the proposed NVZ has an area of less than 20 km^2^. We do  not generate land use model predictions for proposed NVZs less than 20 km^2^ as the land use data we input into the analysis is not considered reliable below that scale. See table 1 for the area of this NVZ. In the case of table 5 being populated with NAs then 0 [zero] was used for the modelling score in the designation matrix.
+
+-------------------------------------------------------------- ---------------------
+NVZ
+-------------------------------------------------------------- ---------------------
+Land use model 95^th^ percentile 
+concentration (class)                                          `r mod.conc` (`r mod.2017`)
+
+High confidence lower and upper bounds for land use model 
+95^th^ percentile concentration estimate                       `r mod.conc.l95` - `r mod.conc.u95`
+
+Moderate confidence lower and upper bounds for land use model 
+95^th^ percentile concentration estimate                       `r mod.conc.l75` - `r mod.conc.u75`
+
+-------------------------------------------------------------- ---------------------
+
+: Summary of modelling evidence
+
+
+
+```{r, echo = FALSE, fig.width = 6, fig.height = 2, fig.cap = "Landuse analysis predictions relative to 11.3 mgl^-1^ TIN."}
+mod.concs.plot <- c(mod.conc.u95, mod.conc.u75, mod.conc, mod.conc.l75, 
+                    mod.conc.l95)
+p <- LinesGraph(mod.concs.plot)
+p
+```
+
+Figure 5 shows the concentration of the 95^th^ percentile TIN concentration land use model prediction, plus the upper and lower, moderate and high confidence bounds in relation to 11.3 mgl^-1^ TIN. 
+
+Figure 6 shows how the model predictions vary across the designated area. If any waterbodies (including the designating waterbody) are not coloured on figure 5 the most likely cause is that the waterbody for tributary designations or the entire upstream area of the waterbody for main river designations has an area less than 20 km^2^.
+
+![Landuse modelling predictions](`r modelling.map`)
+
+\newpage
+
+Figure 7 shows how the nitrate available for leaching from agricultural sources, as predicted by the ADAS NEAP N model, varies over time for this NVZ designation. The data is presented relative to a baseline (the year 2000). The NEAP N model uses long term average climate data, so changes in nitrate available for leaching is due solely to changes in cropping and livestock within the NVZ. 
+
+![Nitrate avaialble for leaching across NVZ `r nvz.id` relative to 2000 baseline due to cropping and livestock](`r neap.graph`)
+
+NEAP N has been developed over time so a portion of any temporal variation may be due to changes to the model, model parameters or input data. 
+
+\newpage  
+
+## Contribution of agriculture to nitrogen losses
+
+### Sectoral load apportionment from load use analysis inputs
+
+We consider a range of the most important nitrogen sources in a NVZ designation in our land use analysis.  Based on the data that is input to that analysis, we can estimate the contribution of each source to the total losses of nitrogen within the designated area.  
+
+We present the likely contribution from consented discharges and agriculture as a range;  
+
+*   Consented discharges[^2] - the maximum value is based on discharge consent conditions, the conditions consented discharges may not exceed. Therefore the maximum value represents the load emitted from a combination of the greatest flow and the greatest concentration of nitrogen compounds all consented discharges in the catchment may legally emit. The minimum value is based on information from consented discharges with flow and nitrogen concentration monitoring. So represents the most likely load from all consented discharges in the catchment.
+*   Agriculture - the maximum value is the sum of agricultural nitrate load within the catchment predicted by the NEAP N[^3] model. The minimum value is the maximum value split into likely surface and below surface flow pathways. The split is derived from the CERF[^4] model, the minimum value is the portion of the maximum value CERF predicts will travel via the surface pathway (assuming nitrate transport is proportional to the flow split).
+
+Table 6 shows estimated load across the designated area by individual sectors. The minimum contribution is based on the maximum consented discharge value and the minimum agricultural load, while the maximum contribution uses the maximum agricultural load and the minimum consented load. The diffuse urban load and the unswered residential properties load there is a single value only (not a range).
+
+
+``` {r, echo = FALSE, results = "asis"}
+min.loads <- c(ps.load.max, diff.urban.load.min, septic.load.min, ag.load.min,
+               total.load.min, perc.ag.load.min)
+max.loads <- c(ps.load.min, diff.urban.load.max, septic.load.max, ag.load.max,
+               total.load.max, perc.ag.load.max)
+load.names <- c("Consented discharges (kg y^-1^)", "Diffuse urban (kg y^-1^)", 
+                "Unsewered residential properties (kg y^-1^)", 
+                "Agriculture (kg y^-1^)", "Total cathcment load (kg y^-1^)", 
+                "% of total load from agriculture")
+loads.table <- data.frame(min.loads, max.loads, row.names = load.names)
+names(loads.table) <- c("Miniumum contribution", "Maximum contribution") 
+kable(loads.table, caption = "Sumamry of sources of pollution by nitrogen 
+      compunds")
+```
+
+Figures 8 and 9 shows the information in table 6 presented as percentage apportionment to individual sectors. Figure 8 shows the minimum agricultural contribtuino and figure 9 shows the maximum agricultrual contribution.
+
+
+``` {r, echo = FALSE, fig.width = 6, fig.height = 2, fig.cap = "Percentage apportionment to sectors using the minimum agricultral load estimate and the maximum consented discharge load estiamte from 2017 NVZ designation land use analysis"}
+
+min.la.perc <- ((loads.table[1:4, 1]) / loads.table[5, 1]) * 100
+la.labs <- c("Consented discharges", "Diffuse urban", 
+             "Unsewered residential properties", "Agriculture")
+min.la.perc <- data.frame(variable = la.labs, value = min.la.perc)
+
+p <- ggplot(min.la.perc, aes(x = reorder(variable, value), y = value))
+p <- p + geom_bar(stat = "identity", fill = "grey60") + coord_flip()
+p <- p + geom_text(aes(label = paste0(round(value, 1), "%")), size = 3)
+p <- p + theme(panel.background = element_blank(),
+               axis.ticks = element_blank(),
+               axis.title = element_blank(),
+               axis.text.x = element_blank(),
+               legend.position = "none")
+p
+
+```
+
+``` {r, echo = FALSE, fig.width = 6, fig.height = 2, fig.cap = "Percentage apportionment to sectors using the maximum agricultral load estimate and the minimum consented discharge load estiamte from 2017 NVZ designation land use analysis"}
+
+max.la.perc <- ((loads.table[1:4, 2]) / loads.table[5, 2]) * 100
+max.la.perc <- data.frame(variable = la.labs, value = max.la.perc)
+
+p <- ggplot(max.la.perc, aes(x = reorder(variable, value), y = value))
+p <- p + geom_bar(stat = "identity", fill = "grey60") + coord_flip()
+p <- p + geom_text(aes(label = paste0(round(value, 1), "%")), size = 3)
+p <- p + theme(panel.background = element_blank(),
+               axis.ticks = element_blank(),
+               axis.title = element_blank(),
+               axis.text.x = element_blank(),
+               legend.position = "none")
+p
+
+```
+
+A full list of discharges is included in appendix 2
+
+[^3]: Lee, D. et al., 2015. NEAP-N Nitrate leaching for 1970 and 2014, WT1550, Report to Defra.
+[^4]: Griffiths, J. et al., 2008. Continuous Estimation of River Flows (CERF), Environment Agency Science Report SC030240.
+
+\newpage
+
+### Sectoral load apportionment from SEPERATE[^5] framework
+
+SEPERATE (SEctor Pollutant AppoRtionment for the AquaTic Environment) is a national scale multiple pollutant source apportionment framework developed by ADAS, Rothamsted Research, Centre for Ecology and Hydrology and the Environment Agency. SEPERATE uses data on sources of total nitrogen including agricultural practice, sewage treatment works, combined sewer overflows, storm tanks & septic tanks, to apportion the load input to the aquatic environemnt into individual sectors.  
+
+Table 7 shows the load SEPERATE estimates is generated per sector. Figure 8 shows the same data expressed as a percentage of the total load. Note that for main river designations data is provided for the entire upstream area, while for tributary designations only data from the designating waterbody is provided. Not all desigantions are able to use data from SEPERATE, if this is the case there will be a message below instead of table 7 and figure 10.
+
+```{r seperate_main, echo = FALSE, results = "asis"}
+
+sep.yes <- FALSE
+sep.pholder.text <- "Outputs from the SEPERATE model are not available for this NVZ designation."
+
+if (nvz.type3 == 2 && nvz.area >= 25) {
+    sep.yes <- TRUE
+    if (nvz.type2 == "main river") {
+        sep.dat <- sep_cumulative[sep_cumulative$EA_WB_ID == nvz.wb, ]
+        sep.labs <- c("Agricultural", "Bank Erosion", "Urban Diffuse", "STW",
+                      "Storm Tank", "Sceptic Tank", "CSO", "Direct Deposition", 
+                      "Groundwater", "Waterbody Total")
+    } else {sep.dat <- sep_local[sep_local$EA_WB_ID == nvz.wb, ]
+    sep.labs <- c("Agricultural", "Bank Erosion", "Urban Diffuse", "STW",
+                  "Storm Tank", "Sceptic Tank", "CSO", "Direct Deposition",
+                  "Waterbody Total")
+    }
+}
+
+if (nvz.type3 == 1 && nvz.wb %in% sep_cycle1$EA_WB_ID && nvz.area >= 25) {
+    sep.yes <- TRUE
+    if (nvz.type2 == "main river") {
+        sep.dat <- sep_cumulative[sep_cumulative$EA_WB_ID == nvz.wb, ]
+        sep.labs <- c("Agricultural", "Bank Erosion", "Urban Diffuse", "STW",
+                      "Storm Tank", "Sceptic Tank", "CSO", "Direct Deposition", 
+                      "Groundwater", "Waterbody Total")
+    } else {sep.dat <- sep_local[sep_local$EA_WB_ID == nvz.wb, ]
+    sep.labs <- c("Agricultural", "Bank Erosion", "Urban Diffuse", "STW",
+                  "Storm Tank", "Sceptic Tank", "CSO", "Direct Deposition",
+                  "Waterbody Total")
+    }
+}
+
+if (sep.yes) {
+    sep.dat.load <- sep.dat[, 2:((ncol(sep.dat) / 2) + 1)]
+    sep.dat.load <- data.frame(t(sep.dat.load))
+    row.names(sep.dat.load) <- c(sep.labs)
+    names(sep.dat.load) <- c("Load (t yr^-1^)")
+    kable(sep.dat.load, caption = "Load in t yr^-1^ across designated area from SEPERATE framework (2014)")
+} else {cat("\n", sep.pholder.text, "\n")}
+
+
+```
+
+```{r seperate_plot, echo = FALSE, fig.cap = "Percentage apportionment of nitrate load across designated area from SEPERATE framework (2014)", fig.height = 3, fig.width = 6}
+if (sep.yes) {
+    sep.dat.perc <- sep.dat[, c(((ncol(sep.dat) / 2) + 2):ncol(sep.dat))]
+    sep.dat.perc <- cbind(sep.labs[-length(sep.labs)], data.frame(t(sep.dat.perc)))
+    names(sep.dat.perc) <- c("variable", "value")
+    p <- ggplot(sep.dat.perc, aes(x = reorder(variable, value), y = value))
+    p <- p + geom_bar(stat = "identity", fill = "grey60") + coord_flip()
+    p <- p + geom_text(aes(label = paste0(value, "%")), size = 3)
+    p <- p + theme(panel.background = element_blank(),
+                   axis.ticks = element_blank(),
+                   axis.title = element_blank(),
+                   axis.text.x = element_blank(),
+                   legend.position = "none")
+    p
+}
+
+```
+
+[^5]: Zhang, Y. et al., 2014. Cross sector contributions to river pollution in England and Wales: Updating waterbody scale information to support policy delivery for the Water Framework Directive. Environmental Science and Policy, 42, pp.16–32.
+
+\newpage
+
+# Additonal Information
+
+`r additional.info`
+
+\newpage  
+
+# Appendices
+
+## Appendix 1
+
+```{r, echo = FALSE, fig.width = 6, fig.height = 4, results = "asis"}
+for (i in 1:length(mult.graph)) {
+    #cat("![](`r mult.graph[i]`)")
+    img <- readPNG(mult.graph[i])
+    plot.new()
+    grid.raster(img)
+    #cat("\n")
+    #cat("\n Appendix figure ", i, ": TIN as N time series, trend and forecasted trend
+    #    from site ", all.smpts[i], ". \n", sep = "")
+}
+```
+
+
+\newpage  
+
+## Appendix 2
+
+``` {r, echo = FALSE, results = "asis"}
+kable(source.table, caption = paste0("Summary of sources of nitrogen 
+                                     compounds within NVZ", nvz.id))
+```
+
+In the table above flow is given in mega litres per day (Mld^-1^), concentration in milligrams per litre (mgl^-1^ as N) expressed as N and load in kilograms per day as N (kgd^-1^ as N). 
+
+[^6]: Lee, D. et al., 2015. NEAP-N Nitrate leaching for 1970 and 2014, WT1550, Report to Defra.
+[^7]: Lerner, D., 2000. Guidelines for estimating urban loads of nitrogen to groundwater, NT1845, Report to Defra.
