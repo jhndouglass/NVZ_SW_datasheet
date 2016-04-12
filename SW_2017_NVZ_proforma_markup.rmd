@@ -46,9 +46,7 @@ The maps featured in this report are subject to at least one of the following co
 
 This document presents the evidence in support of this area as a Nitrate Vulnerable Zone (NVZ) as of 1^st^ January 2017.  This designation is based on the Surface Water methodology, which uses a combination of monitored and modelled evidence  to determine if river waterbodies are polluted or at risk of being polluted.  
 
-## Introduction summary
-
-This document will summarise why this area is considered to drain to a watercourse that is polluted or at risk of being polluted.  For more details on the method, please refer to the full surface water methodology -- [www.gov.uk/nvz_test_xyz](www.gov.uk/nvz_test_xyz).  
+This document will summarise why this area is considered to drain to a waterbody that is polluted or at risk of being polluted.  For more details on the method, please refer to the full surface water methodology -- [www.gov.uk/nvz_test_xyz](www.gov.uk/nvz_test_xyz).  
 
 
 ## Core principles  
@@ -69,9 +67,7 @@ We review the evidence every four years, and we believe that NVZ designation is 
 
 \newpage
 
-# Summary of evidence
-
-## Basic details
+# Basic information
 
 -------------------------------------------- ---------------------
 NVZ
@@ -149,7 +145,7 @@ The figure 2 shows the area covered by this NVZ.
 
 \newpage 
 
-## Monitoring Evidence
+# Monitoring Evidence
 
 ------------------------------------------------------- --------------------------------
 NVZ
@@ -210,7 +206,7 @@ In figure 4, the small crosses represent the outlets of consented discharges[^2]
 
 \newpage
 
-## Modelling Evidence
+# Modelling Evidence
 
 Our modelling (refereed to as the land use model) predicts the underlying risk of pollution from the land use within the designated NVZ catchment. It allows us to assess whether a waterbody is polluted even if we have no monitoring or where the monitoring data is not suitable for use in this assessment.
 
@@ -249,13 +245,14 @@ if (mod.2017 != 0) {
                         mod.conc.l95)
     p <- LinesGraph(mod.concs.plot)
     p
-} else{
-    cat("Figure 5 is not included")
 }
-
 ```
 
-Figure 5 shows the concentration of the 95^th^ percentile TIN concentration land use model prediction, plus the upper and lower, moderate and high confidence bounds in relation to 11.3 mgl^-1^ TIN. 
+```{r echo = FALSE, results = "asis"}
+if (mod.2017 != 0) {
+        cat("Figure 5 shows the concentration of the 95^th^ percentile TIN concentration land use model prediction, plus the upper and lower, moderate and high confidence bounds in relation to 11.3 mgl^-1^ TIN.")
+}
+```
 
 Figure 6 shows how the model predictions vary across the designated area. If any waterbodies (including the designating waterbody) are not coloured on figure 5 the most likely cause is that the waterbody for tributary designations or the entire upstream area of the waterbody for main river designations has an area less than 20 km^2^.
 
@@ -263,13 +260,7 @@ Figure 6 shows how the model predictions vary across the designated area. If any
 
 \newpage
 
-Figure 7 shows how the nitrate available for leaching from agricultural sources, as predicted by the ADAS NEAP N model, varies over time for this NVZ designation. The data is presented relative to a baseline (the year 2000). The NEAP N model uses long term average climate data, so changes in nitrate available for leaching is due solely to changes in cropping and livestock within the NVZ. 
-
-![Nitrate avaialble for leaching across NVZ `r nvz.id` relative to 2000 baseline due to cropping and livestock](`r neap.graph`)
-
-NEAP N has been developed over time so a portion of any temporal variation may be due to changes to the model, model parameters or input data. 
-
-\newpage  
+# Supporting Evidence
 
 ## Contribution of agriculture to nitrogen losses
 
@@ -417,13 +408,40 @@ if (sep.yes) {
 
 ```
 
-[^5]: Zhang, Y. et al., 2014. Cross sector contributions to river pollution in England and Wales: Updating waterbody scale information to support policy delivery for the Water Framework Directive. Environmental Science and Policy, 42, pp.16-€“32.
+[^5]: Zhang, Y. et al., 2014. Cross sector contributions to river pollution in England and Wales: Updating waterbody scale information to support policy delivery for the Water Framework Directive. Environmental Science and Policy, 42, pp.16-32.
 
 \newpage
 
-# Additonal Information
+### Sectoral load apportionment from SIMCAT
 
-`r additional.info`
+SIMCAT is a well-established river water quality model with a long history of use in the UK. It has recently been developed to allow apportionment of a range of pollutants to various sectors, including agriculture.
+
+
+
+
+\newpage
+
+## Landuse within the designation
+
+\newpage
+
+## Agricultural load over time
+
+Figure 7 shows how the nitrate available for leaching from agricultural sources, as predicted by the ADAS NEAP N model, varies over time for this NVZ designation. The data is presented relative to a baseline (the year 2000). The NEAP N model uses long term average climate data, so changes in nitrate available for leaching is due solely to changes in cropping and livestock within the NVZ. 
+
+![Nitrate avaialble for leaching across NVZ `r nvz.id` relative to 2000 baseline due to cropping and livestock](`r neap.graph`)
+
+NEAP N has been developed over time so a portion of any temporal variation may be due to changes to the model, model parameters or input data. 
+
+\newpage 
+
+## Workshop discussion
+
+As part of the designation process the Environment Agency held a series of workshops with EA area staff and invited partners, including representatives from the farming industry.
+
+The purpose the workshops was to discuss any proposed NVZ designations where the evidence supporting designation was uncertain or contrdictory, or where there were new or modified designations. We were not able to discuss every designation, but where discussion did take place abridged notes are provided below.
+
+`r workshop.discussion`
 
 \newpage  
 

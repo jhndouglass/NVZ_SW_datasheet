@@ -86,6 +86,7 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     nvz.prev.sw <- nvz.curr$PropSW13 * 100
     nvz.prev <- nvz.curr$PropNVZ13 * 100
     additional.info <- nvz.curr$Summary_Text
+    workshop.discussion <- nvz.curr$Workshop_discussion_summary
     fail.count.text.upstream <- "Equivalent graphs for all other upstream
                                 polluted sample points are included in
                                 appendix 1 of this document."
