@@ -1,5 +1,5 @@
 ---
-title: "`r nvz.name` NVZ surface water designation data sheet"
+title: "`r nvz.name` surface water designation data sheet"
 linkcolor: blue
 output: 
     pdf_document: 
@@ -14,7 +14,7 @@ header-includes:
 - \pagestyle{fancy}
 - \fancyfoot[CO,CE]{NVZ `r nvz.id` - `r nvz.name`}
 - \fancyfoot[LE,RO]{\thepage}
-abstract: This document contains a summary of the evidence used to designate NVZ `r nvz.id` - `r nvz.name`. It was produced on `r format(Sys.Date(), "%d/%m/%Y")` by the Environment Agency on behalf of the Secretary of State for the Environment. \newline \newline `r nvz.name` is `r nvz.type1.text` designation. Our assessment of monitoring data shows that water quality in this NVZ has `r mon.change.text` in the 2017 NVZ review period compared to the previous two NVZ reviews. Our modelling assessment shows that water quality in this NVZ has `r mod.change.text` in the 2017 NVZ review period compared to the previous two NVZ reviews. `r nvz.des.text` \newline \newline There `r fail.count.text` in the waterbody that designates this NVZ, and in total `r fail.count.upstream` polluted sample points in the entire designated NVZ. Based on our assessment of monitoring data we are `r mon.conf.text`. \newline \newline Based on our modelling assessment we are `r mod.conf.text`. \newline \newline The contribution of agriculture to the observed nitrate pollution in this NVZ has been assessed and we are confident that agriculture is an important contributor to nitrate pollution.
+abstract: This document contains a summary of the evidence used to designate `r nvz.id` - `r nvz.name`. It was produced on `r format(Sys.Date(), "%d/%m/%Y")` by the Environment Agency on behalf of the Secretary of State for the Environment. \newline \newline `r nvz.name` is `r nvz.type1.text` designation. Our assessment of monitoring data shows that water quality in this NVZ has `r mon.change.text` in the 2017 NVZ review period compared to the previous two NVZ reviews. Our modelling assessment shows that water quality in this NVZ has `r mod.change.text` in the 2017 NVZ review period compared to the previous two NVZ reviews. `r nvz.des.text` \newline \newline There `r fail.count.text` in the waterbody that designates this NVZ, and `r fail.count.text.upstream1` in the entire upstream designated NVZ. `r mon.conf.text` \newline \newline `r mod.conf.text` \newline \newline `r additional.info` \newline \newline The contribution of agriculture to the observed nitrate pollution in this NVZ has been assessed and we are confident that agriculture is an important contributor to nitrate pollution.
 ---
 
 ```{r, echo = FALSE}
@@ -84,7 +84,7 @@ Area (km^2^)                                 `r nvz.area`
 
 NVZ type (existing/new)                      `r nvz.type1`
 
-NVZ type (catchment/waterbody)               `r nvz.type2`
+NVZ type (catchment/waterbody)               `r nvz.type2.text`
 
 Designating WFD waterbody                    `r nvz.wb`
 
@@ -164,7 +164,7 @@ Number of sample points with 95^th^ percentile TIN
 greater than 11.3 mgl^-1^ in the designated NVZ         `r fail.count.upstream`
 
 Most polluted sample point in the designating 
-waterbody                                               `r paste0(worst, " - ", worst.name)`
+waterbody                                               `r worst`
 
 Current monitored 95^th^ percentile 
 concentration (class)                                   `r paste0(mon.conc, " mgl^-1^ (", mon.2017, ")")`
@@ -188,7 +188,7 @@ Moderate confidence lower and upper bounds for trend
 
 : Summary of monitoring evidence
 
-There `r fail.count.text` in the land draining to this water.  Figure 3 shows the time series of concentrations for the most polluted sample point in the designating waterbody.
+There `r fail.count.text` in the waterbody that designates this NVZ, and `r fail.count.text.upstream1` in the entire upstream designated NVZ. Figure 3 shows the time series of concentrations for the most polluted sample point in the designating waterbody.
 
 ![TIN as N time series for `r worst` ](`r worst.graph`)
 
@@ -198,7 +198,7 @@ In figure 3;
 *	The dark blue line represents the 95^th^ percentile over time.
 *	`r curr.est.text`
 *   The right most dashed blue line represents mid-2020. Where is it crosses the dark blue line is the future (2020) 95^th^ percentile.
-*	The blue shaded areas from 2015 onwards represent the uncertainty in the future 95^th^ percentile. There is a 75% probability that the future 95^th^ percentile lies within the dark blue shaded area and a 95% probability that the future 95^th^ percentile lies within the light blue shaded area.
+*	The blue shaded areas from 2015 onward represent the uncertainty in the future 95^th^ percentile. There is a 75% probability that the future 95^th^ percentile lies within the dark blue shaded area and a 95% probability that the future 95^th^ percentile lies within the light blue shaded area.
 
 `r fail.count.text.us`
 
@@ -243,11 +243,16 @@ Moderate confidence lower and upper bounds for land use model
 
 
 
-```{r, echo = FALSE, fig.width = 6, fig.height = 2, fig.cap = "Landuse analysis predictions relative to 11.3 mgl^-1^ TIN."}
-mod.concs.plot <- c(mod.conc.u95, mod.conc.u75, mod.conc, mod.conc.l75, 
-                    mod.conc.l95)
-p <- LinesGraph(mod.concs.plot)
-p
+```{r, echo = FALSE, fig.width = 6, fig.height = 2, fig.cap = "Landuse analysis predictions relative to 11.3 mgl^-1^ TIN.", results = "asis"}
+if (mod.2017 != 0) {
+    mod.concs.plot <- c(mod.conc.u95, mod.conc.u75, mod.conc, mod.conc.l75, 
+                        mod.conc.l95)
+    p <- LinesGraph(mod.concs.plot)
+    p
+} else{
+    cat("Figure 5 is not included")
+}
+
 ```
 
 Figure 5 shows the concentration of the 95^th^ percentile TIN concentration land use model prediction, plus the upper and lower, moderate and high confidence bounds in relation to 11.3 mgl^-1^ TIN. 
@@ -277,25 +282,25 @@ We present the likely contribution from consented discharges and agriculture as 
 *   Consented discharges[^2] - the maximum value is based on discharge consent conditions, the conditions consented discharges may not exceed. Therefore the maximum value represents the load emitted from a combination of the greatest flow and the greatest concentration of nitrogen compounds all consented discharges in the catchment may legally emit. The minimum value is based on information from consented discharges with flow and nitrogen concentration monitoring. So represents the most likely load from all consented discharges in the catchment.
 *   Agriculture - the maximum value is the sum of agricultural nitrate load within the catchment predicted by the NEAP N[^3] model. The minimum value is the maximum value split into likely surface and below surface flow pathways. The split is derived from the CERF[^4] model, the minimum value is the portion of the maximum value CERF predicts will travel via the surface pathway (assuming nitrate transport is proportional to the flow split).
 
-Table 6 shows estimated load across the designated area by individual sectors. The minimum contribution is based on the maximum consented discharge value and the minimum agricultural load, while the maximum contribution uses the maximum agricultural load and the minimum consented load. The diffuse urban load and the unswered residential properties load there is a single value only (not a range).
+Table 6 shows estimated load across the designated area by individual sectors. The minimum contribution is based on the maximum consented discharge value and the minimum agricultural load, while the maximum contribution uses the maximum agricultural load and the minimum consented load. The diffuse urban load and the unsewered residential properties load there is a single value only (not a range).
 
 
 ``` {r, echo = FALSE, results = "asis"}
-min.loads <- c(ps.load.max, diff.urban.load.min, septic.load.min, ag.load.min,
-               total.load.min, perc.ag.load.min)
-max.loads <- c(ps.load.min, diff.urban.load.max, septic.load.max, ag.load.max,
-               total.load.max, perc.ag.load.max)
+minag.loads <- c(ps.load.max, diff.urban.load, septic.load, ag.load,
+               total.load.agmin, perc.ag.load.min)
+maxag.loads <- c(ps.load.min, diff.urban.load, septic.load, ag.load,
+               total.load.agmax, perc.ag.load.max)
 load.names <- c("Consented discharges (kg y^-1^)", "Diffuse urban (kg y^-1^)", 
                 "Unsewered residential properties (kg y^-1^)", 
                 "Agriculture (kg y^-1^)", "Total cathcment load (kg y^-1^)", 
                 "% of total load from agriculture")
-loads.table <- data.frame(min.loads, max.loads, row.names = load.names)
+loads.table <- data.frame(minag.loads, maxag.loads, row.names = load.names)
 names(loads.table) <- c("Miniumum contribution", "Maximum contribution") 
 kable(loads.table, caption = "Sumamry of sources of pollution by nitrogen 
       compunds")
 ```
 
-Figures 8 and 9 shows the information in table 6 presented as percentage apportionment to individual sectors. Figure 8 shows the minimum agricultural contribtuino and figure 9 shows the maximum agricultrual contribution.
+Figures 8 and 9 shows the information in table 6 presented as percentage apportionment to individual sectors. Figure 8 shows the minimum agricultural contribution and figure 9 shows the maximum agricultural contribution.
 
 
 ``` {r, echo = FALSE, fig.width = 6, fig.height = 2, fig.cap = "Percentage apportionment to sectors using the minimum agricultral load estimate and the maximum consented discharge load estiamte from 2017 NVZ designation land use analysis"}
@@ -308,6 +313,7 @@ min.la.perc <- data.frame(variable = la.labs, value = min.la.perc)
 p <- ggplot(min.la.perc, aes(x = reorder(variable, value), y = value))
 p <- p + geom_bar(stat = "identity", fill = "grey60") + coord_flip()
 p <- p + geom_text(aes(label = paste0(round(value, 1), "%")), size = 3)
+p <- p + ylim(0, 100)
 p <- p + theme(panel.background = element_blank(),
                axis.ticks = element_blank(),
                axis.title = element_blank(),
@@ -325,6 +331,7 @@ max.la.perc <- data.frame(variable = la.labs, value = max.la.perc)
 p <- ggplot(max.la.perc, aes(x = reorder(variable, value), y = value))
 p <- p + geom_bar(stat = "identity", fill = "grey60") + coord_flip()
 p <- p + geom_text(aes(label = paste0(round(value, 1), "%")), size = 3)
+p <- p + ylim(0, 100)
 p <- p + theme(panel.background = element_blank(),
                axis.ticks = element_blank(),
                axis.title = element_blank(),
@@ -343,9 +350,9 @@ A full list of discharges is included in appendix 2
 
 ### Sectoral load apportionment from SEPERATE[^5] framework
 
-SEPERATE (SEctor Pollutant AppoRtionment for the AquaTic Environment) is a national scale multiple pollutant source apportionment framework developed by ADAS, Rothamsted Research, Centre for Ecology and Hydrology and the Environment Agency. SEPERATE uses data on sources of total nitrogen including agricultural practice, sewage treatment works, combined sewer overflows, storm tanks & septic tanks, to apportion the load input to the aquatic environemnt into individual sectors.  
+SEPERATE (SEctor Pollutant AppoRtionment for the AquaTic Environment) is a national scale multiple pollutant source apportionment framework developed by ADAS, Rothamsted Research, Centre for Ecology and Hydrology and the Environment Agency. SEPERATE uses data on sources of total nitrogen including agricultural practice, sewage treatment works, combined sewer overflows, storm tanks & septic tanks, to apportion the load input to the aquatic environment into individual sectors.  
 
-Table 7 shows the load SEPERATE estimates is generated per sector. Figure 8 shows the same data expressed as a percentage of the total load. Note that for main river designations data is provided for the entire upstream area, while for tributary designations only data from the designating waterbody is provided. Not all desigantions are able to use data from SEPERATE, if this is the case there will be a message below instead of table 7 and figure 10.
+Table 7 shows the load SEPERATE estimates is generated per sector. Figure 8 shows the same data expressed as a percentage of the total load. Note that for main river designations data is provided for the entire upstream area, while for tributary designations only data from the designating waterbody is provided. Not all designations are able to use data from SEPERATE, if this is the case there will be a message below instead of table 7 and figure 10.
 
 ```{r seperate_main, echo = FALSE, results = "asis"}
 
@@ -399,6 +406,7 @@ if (sep.yes) {
     p <- ggplot(sep.dat.perc, aes(x = reorder(variable, value), y = value))
     p <- p + geom_bar(stat = "identity", fill = "grey60") + coord_flip()
     p <- p + geom_text(aes(label = paste0(value, "%")), size = 3)
+    p <- p + ylim(0, 100)
     p <- p + theme(panel.background = element_blank(),
                    axis.ticks = element_blank(),
                    axis.title = element_blank(),
@@ -409,7 +417,7 @@ if (sep.yes) {
 
 ```
 
-[^5]: Zhang, Y. et al., 2014. Cross sector contributions to river pollution in England and Wales: Updating waterbody scale information to support policy delivery for the Water Framework Directive. Environmental Science and Policy, 42, pp.16â€“32.
+[^5]: Zhang, Y. et al., 2014. Cross sector contributions to river pollution in England and Wales: Updating waterbody scale information to support policy delivery for the Water Framework Directive. Environmental Science and Policy, 42, pp.16-€“32.
 
 \newpage
 
@@ -445,7 +453,7 @@ kable(source.table, caption = paste0("Summary of sources of nitrogen
                                      compounds within NVZ", nvz.id))
 ```
 
-In the table above flow is given in mega litres per day (Mld^-1^), concentration in milligrams per litre (mgl^-1^ as N) expressed as N and load in kilograms per day as N (kgd^-1^ as N). 
+In the table above flow is given in mega  per day (Mld^-1^), concentration in milligrams per litre (mgl^-1^ as N) expressed as N and load in kilograms per day as N (kgd^-1^ as N). 
 
 [^6]: Lee, D. et al., 2015. NEAP-N Nitrate leaching for 1970 and 2014, WT1550, Report to Defra.
 [^7]: Lerner, D., 2000. Guidelines for estimating urban loads of nitrogen to groundwater, NT1845, Report to Defra.
