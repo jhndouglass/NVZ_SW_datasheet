@@ -55,11 +55,15 @@ LinesGraph <- function(concs) {
 ## EXECUTED STATEMENTS----------------------------------------------------------
 nvzs <- read.csv("DatasheetExport.csv",
                  stringsAsFactors = FALSE)
-nvzs <- nvzs[2:4, ]
+nvzs <- nvzs[10, ]
 
 new.text <- read.csv("designation_new_text.csv", row.names = 1,
                      stringsAsFactors = FALSE)
-names(new.text) <- c("improved", "remained stable", "deteriorated")
+names(new.text) <- c("improved", "remained stable", "deteriorated", "notused")
+
+existing.text <- read.csv("designation_existing_text.csv", row.names = 1,
+                          stringsAsFactors = FALSE)
+names(existing.text) <- c("improved", "remained stable", "deteriorated", "notused")
 
 sep_local <- read.csv("seperate_local.csv")
 sep_cumulative <- read.csv("seperate_cumulative.csv")
@@ -68,10 +72,6 @@ sep_cycle1 <- read.csv("seperate_cycle1_list.csv")
 source.app <- read.csv("SourceApp.csv",
                        stringsAsFactors = FALSE)
 
-existing.text <- read.csv("designation_existing_text.csv", row.names = 1,
-                          stringsAsFactors = FALSE)
-names(existing.text) <- c("improved", "remained stable", "deteriorated")
-
 ## knitr loop ------------------------------------------------------------------
 for (nvz in unique(nvzs$NVZ_ID)) {
     nvz.curr <- nvzs[nvzs$NVZ_ID == nvz, ]
@@ -79,7 +79,7 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     nvz.name <- nvz.curr$NVZ_NAME
     nvz.id <- nvz.curr$NVZ_ID
     nvz.wb <- nvz.curr$MAP_WB
-    nvz.area <- nvz.curr$POLYAREA
+    nvz.area <- round(nvz.curr$POLYAREA, 2)
     nvz.type1 <- nvz.curr$NVZ_TYPE
     nvz.type2 <- nvz.curr$Accumluated_NVZ_type_2017
     nvz.type3 <- nvz.curr$CYCLE
@@ -87,9 +87,6 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     nvz.prev <- nvz.curr$PropNVZ13 * 100
     additional.info <- nvz.curr$Summary_Text
     workshop.discussion <- nvz.curr$Workshop_discussion_summary
-    fail.count.text.upstream <- "Equivalent graphs for all other upstream
-                                polluted sample points are included in
-                                appendix 1 of this document."
     overview.map <- paste0("Overview maps/", nvz.wb, "_overviewmap.png")
     monitoring.map <- paste0("Monitoring maps/", nvz.wb, "_monitoringmap.png")
     ## The table of source must be supplied to the program as a table - chat
@@ -106,9 +103,9 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         main.wb.scores.text <- "catchment scores"
         nvz.type2.text <- "catchment"
         smpt.count <- nvz.curr$X2017_main_Smpt_in_WB
-        smpt.count.upstream <- nvz.curr$X2017_Upstream_Main_SMPT
+        smpt.count.upstream <- nvz.curr$X2017_Upstream_Main_SMPT + smpt.count
         fail.count <- nvz.curr$X2017_Main_Fails_in_WB
-        fail.count.upstream <- nvz.curr$X2017_Upstream_Main_River_Fails
+        fail.count.upstream <- nvz.curr$X2017_Upstream_Main_River_Fails + fail.count
         if (fail.count == 0) {
             fail.count.text <- "are no polluted sample points"
         } else{
@@ -117,15 +114,12 @@ for (nvz in unique(nvzs$NVZ_ID)) {
             } else{fail.count.text <- "is one polluted sample point"}
         }
         if (fail.count.upstream == 0) {
-            fail.count.text.upstream1 <- "no polluted sample points"
+            fail.count.text.upstream <- "no polluted sample points"
         } else{
             if (fail.count.upstream > 1) {
-                fail.count.text.upstream1 <- paste0(fail.count.upstream, " polluted sample points")
-            } else{fail.count.text.upstream1 <- "one polluted sample point"}
+                fail.count.text.upstream <- paste0(fail.count.upstream, " polluted sample points")
+            } else{fail.count.text.upstream <- "one polluted sample point"}
         }
-        ifelse(fail.count.upstream > 1,
-               fail.count.text.us <- fail.count.text.upstream,
-               fail.count.text.us <- "")
         worst <- nvz.curr$X2017_Main_SMPT_Id
         worst.graph <- paste0("SW TIN PNG Files/", worst, ".png" )
         neap.graph <- paste0("NEAPN_graphs/", nvz.wb,"_cycle", nvz.type3, "_catchment_neapn.png")
@@ -140,25 +134,8 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         mon.2009 <- nvz.curr$X2009_Main_Mon_Class
         mon.2013 <- nvz.curr$X2013_Main_mon_Class
         mon.2017 <- nvz.curr$X2017_Main_Mon_Class
-        mon.conf.text <- switch(as.character(mon.2017),
-                                "0" = "",
-                                "1" = "Based on our assessment of monitoring data we are highly confident that the water is not polluted.",
-                                "2" = "Based on our assessment of monitoring data we are moderately confident that water is not polluted.",
-                                "3" = "Based on our assessment of monitoring data we are somewhat confident that the water is not polluted.",
-                                "4" = "Based on our assessment of monitoring data we are somewhat confident that the water is polluted.",
-                                "5" = "Based on our assessment of monitoring data we are moderately confident that water is polluted.",
-                                "6" = "Based on our assessment of monitoring data we are highly confident that the water is polluted.")
-        mod.2009 <- nvz.curr$X2009_Main_Mod_Class
         mod.2013 <- nvz.curr$X2013_Main_Mod_Class
         mod.2017 <- nvz.curr$X2017_Main_Mod_Class
-        mod.conf.text <- switch(as.character(mod.2017),
-                                "0" = "We did not use modelling evidence in making this designation",
-                                "1" = "Based on our modelling assessement we are highly confident that the water is not polluted.",
-                                "2" = "Based on our modelling assessement we are moderately confident that water is not polluted.",
-                                "3" = "Based on our modelling assessement we are somewhat confident that the water is not polluted.",
-                                "4" = "Based on our modelling assessement we are somewhat confident that the water is polluted.",
-                                "5" = "Based on our modelling assessement we are moderately confident that water is polluted.",
-                                "6" = "Based on our modelling assessement we are highly confident that the water is polluted.")
         mon.conc <- round(nvz.curr$Main_Current_est, 2)
         mon.conc.u95 <- round(nvz.curr$Main_Current_u90, 2)
         mon.conc.l95 <- round(nvz.curr$Main_Current_l90, 2)
@@ -196,13 +173,25 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         total.load.agmax <- round(source.app.curr$AGMAX_Cat_TotalN_kgYr, 2)
         perc.ag.load.min <- round(source.app.curr$Cat_AgMin_PropAg * 100, 2)
         perc.ag.load.max <- round(source.app.curr$Cat_AGMAx_PropAg * 100, 2)
+        arable.area <- round(nvz.curr$NVZ_AR_HA, 2)
+        grass.area <- round(nvz.curr$NVZ_PG_HA,2)
+        rough.area <- round(nvz.curr$NVZ_RG_HA, 2)
+        wood.area <- round(nvz.curr$NVZ_WD_HA, 2)
+        urban.area <- round(nvz.curr$NVZ_UR_HA, 2)
+        count.sheep <- nvz.curr$NVZ_Sheep
+        count.cows <- nvz.curr$NVZ_Cows
+        count.pigs <- nvz.curr$NVZ_Pigs
+        count.poultry <- nvz.curr$NVZ_Poultry
+        count.other <- nvz.curr$NVZ_OtherAnimals
+        simcat.conc <- round(source.app.curr$SIMCAT_N_C_Conc, 2)
+        simcat.prop <- round(source.app.curr$SIMCAT_C_DiffN_Prop, 2)
     } else {
         main.wb.scores.text <- "waterbody scores"
         nvz.type2.text <- "waterbody"
         smpt.count <- nvz.curr$X2017_trib_Smpt_in_WB
-        smpt.count.upstream <- nvz.curr$X2017_Upstream_trib_SMPT
+        smpt.count.upstream <- nvz.curr$X2017_Upstream_trib_SMPT + smpt.count
         fail.count <- nvz.curr$X2017_trib_Fails_in_WB
-        fail.count.upstream <- nvz.curr$X2017_Upstream_trib_River_Fails
+        fail.count.upstream <- nvz.curr$X2017_Upstream_trib_River_Fails + fail.count
         if (fail.count == 0) {
             fail.count.text <- "are no polluted sample points"
         } else{
@@ -211,15 +200,12 @@ for (nvz in unique(nvzs$NVZ_ID)) {
             } else{fail.count.text <- "is one polluted sample point"}
         }
         if (fail.count.upstream == 0) {
-            fail.count.text.upstream1 <- "no polluted sample points"
+            fail.count.text.upstream <- "no polluted sample points"
         } else{
             if (fail.count.upstream > 1) {
-                fail.count.text.upstream1 <- paste0(fail.count.upstream, " polluted sample points")
-            } else{fail.count.text.upstream1 <- "one polluted sample point"}
+                fail.count.text.upstream <- paste0(fail.count.upstream, " polluted sample points")
+            } else{fail.count.text.upstream <- "one polluted sample point"}
         }
-        ifelse(fail.count.upstream > 1,
-               fail.count.text.us <- fail.count.text.upstream,
-               fail.count.text.us <- "")
         worst <- nvz.curr$Trib_SMPT_Id
         worst.graph <- paste0("SW TIN PNG Files/", worst, ".png" )
         neap.graph <- paste0("NEAPN_graphs/", nvz.wb,"_cycle", nvz.type3, "_catchment_neapn.png")
@@ -233,25 +219,9 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         mon.2009 <- nvz.curr$X2009_WB_Mon_Class
         mon.2013 <- nvz.curr$X2013_WB_Mon_Class
         mon.2017 <- nvz.curr$X2017_WB_Mon_Class
-        mon.conf.text <- switch(as.character(mon.2017),
-                                "0" = "",
-                                "1" = "Based on our assessment of monitoring data we are highly confident that the water is not polluted.",
-                                "2" = "Based on our assessment of monitoring data we are moderately confident that water is not polluted.",
-                                "3" = "Based on our assessment of monitoring data we are somewhat confident that the water is not polluted.",
-                                "4" = "Based on our assessment of monitoring data we are somewhat confident that the water is polluted.",
-                                "5" = "Based on our assessment of monitoring data we are moderately confident that water is polluted.",
-                                "6" = "Based on our assessment of monitoring data we are highly confident that the water is polluted.")
         mod.2009 <- nvz.curr$X2009_WB_Mod_Class
         mod.2013 <- nvz.curr$X2013_WB_Model_Class
         mod.2017 <- nvz.curr$X2017_WB_Model_Class
-        mod.conf.text <- switch(as.character(mod.2017),
-                                "0" = "We did not use modelling evidence in making this designation",
-                                "1" = "Based on our modelling assessement we are highly confident that the water is not polluted.",
-                                "2" = "Based on our modelling assessement we are moderately confident that water is not polluted.",
-                                "3" = "Based on our modelling assessement we are somewhat confident that the water is not polluted.",
-                                "4" = "Based on our modelling assessement we are somewhat confident that the water is polluted.",
-                                "5" = "Based on our modelling assessement we are moderately confident that water is polluted.",
-                                "6" = "Based on our modelling assessement we are highly confident that the water is polluted.")
         mon.conc <- round(nvz.curr$Trib_Current_Est, 2)
         mon.conc.u95 <- round(nvz.curr$Trib_Current_u90, 2)
         mon.conc.l95 <- round(nvz.curr$Trib_Current_l90, 2)
@@ -289,25 +259,42 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         total.load.agmax <- round(source.app.curr$AGMAX_WB_TOTALN_kgyr, 2)
         perc.ag.load.min <- round(source.app.curr$WB_Min_PropAg * 100, 2)
         perc.ag.load.max <- round(source.app.curr$WB_Max_PropAg * 100, 2)
+        arable.area <- round(nvz.curr$NVZ_AR_HA, 2)
+        grass.area <- round(nvz.curr$NVZ_PG_HA,2)
+        rough.area <- round(nvz.curr$NVZ_RG_HA, 2)
+        wood.area <- round(nvz.curr$NVZ_WD_HA, 2)
+        urban.area <- round(nvz.curr$NVZ_UR_HA, 2)
+        count.sheep <- nvz.curr$NVZ_Sheep
+        count.cows <- nvz.curr$NVZ_Cows
+        count.pigs <- nvz.curr$NVZ_Pigs
+        count.poultry <- nvz.curr$NVZ_Poultry
+        count.other <- nvz.curr$NVZ_OtherAnimals
     }
 
     ## get text to indicate how monitoring score has changed
-    if (mon.2017 > max(mon.2013, mon.2009)) {
-        mon.change.text <- "deteriorated"
-    } else {if (mon.2017 == max(mon.2013, mon.2009)) {
-        mon.change.text <- "remained stable"
-    } else {mon.change.text <- "improved" }}
+    if (mon.2017 != 0) {
+        if (mon.2017 > max(mon.2013, mon.2009)) {
+            mon.change.text <- "deteriorated"
+        } else {if (mon.2017 == max(mon.2013, mon.2009)) {
+            mon.change.text <- "remained stable"
+        } else {mon.change.text <- "improved" }}
+    } else {
+        mon.change.text <- "notused"
+    }
 
     ## get text to indicate how modelling score has changed
-    if (mod.2017 > max(mod.2013, mod.2009)) {
-        mod.change.text <- "deteriorated"
-    } else {if (mod.2017 == max(mod.2013, mod.2009)) {
-        mod.change.text <- "remained stable"
-    } else {mod.change.text <- "improved" }}
-
+    if (mod.2017 != 0) {
+        if (mod.2017 > max(mod.2013, mod.2009)) {
+            mod.change.text <- "deteriorated"
+        } else {if (mod.2017 == max(mod.2013, mod.2009)) {
+            mod.change.text <- "remained stable"
+        } else {mod.change.text <- "improved" }}
+    } else {
+        mod.change.text <- "notused"
+    }
 
     ## get text to explain status of NVZ
-    if (tolower(nvz.type1) == "existing") {
+    if (tolower(nvz.type1) == "existing" || tolower(nvz.type1 == "modified")) {
         nvz.des.text <- existing.text[which(row.names(existing.text) == mon.change.text),
                                       which(names(existing.text) == mod.change.text)]
         nvz.type1.text <- "an existing"
@@ -315,6 +302,35 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         nvz.des.text <- new.text[which(row.names(new.text) == mon.change.text),
                                  which(names(new.text) == mod.change.text)]
         nvz.type1.text <- "a new"
+    }
+
+
+    if (mon.2017 == 0) {
+        mon.change.text.long <- "We did not use monitoring evidence in making this designation"
+    } else {
+        mon.conf.text <- switch(as.character(mon.2017),
+                                "1" = "Based on our assessment of monitoring data we have high confidence that the water is not polluted.",
+                                "2" = "Based on our assessment of monitoring data we have moderate confidence that water is not polluted.",
+                                "3" = "Based on our assessment of monitoring data we have low confidence that the water is not polluted.",
+                                "4" = "Based on our assessment of monitoring data we have low confidence that the water is polluted.",
+                                "5" = "Based on our assessment of monitoring data we have moderate confidence that water is polluted.",
+                                "6" = "Based on our assessment of monitoring data we have high confidence that the water is polluted.")
+
+        mon.change.text.long <- paste0("Our assessment of monitoring data shows that water quality in this NVZ has ", mon.change.text, " in the 2017 NVZ review period compared to the previous two NVZ reviews. ", mon.conf.text)
+    }
+
+    if (mod.2017 == 0) {
+        mod.change.text.long <- "We did not use monitoring evidence in making this designation"
+    } else {
+        mod.conf.text <- switch(as.character(mod.2017),
+                                "1" = "Based on our modelling assessement we have high confidence that the water is not polluted.",
+                                "2" = "Based on our modelling assessement we have moderate confidence that water is not polluted.",
+                                "3" = "Based on our modelling assessement we have low confidence that the water is not polluted.",
+                                "4" = "Based on our modelling assessement we have low confidence that the water is polluted.",
+                                "5" = "Based on our modelling assessement we have moderate confidence that water is polluted.",
+                                "6" = "Based on our modelling assessement we have high confidence that the water is polluted.")
+
+        mod.change.text.long <- paste0("Our modelling assessment shows that water quality in this NVZ has ", mod.change.text, " in the 2017 NVZ review period compared to the previous two NVZ reviews. ", mod.conf.text)
     }
 
     ## get text to explain current 95th percentile estiamtes
@@ -325,6 +341,13 @@ for (nvz in unique(nvzs$NVZ_ID)) {
                                mid-2015. Where is it crosses the dark blue line is
                                the current 95^th^ percentile."
     }
+
+    ## this is done very verbosely...
+    mod.conc <- ifelse(mod.conc < 0, 0, mod.conc)
+    mod.conc.l75 <- ifelse(mod.conc.l75 < 0, 0, mod.conc.l75)
+    mod.conc.l95 <- ifelse(mod.conc.l95 < 0, 0, mod.conc.l95)
+    mod.conc.u75 <- ifelse(mod.conc.u75 < 0, 0, mod.conc.u75)
+    mod.conc.u95 <- ifelse(mod.conc.u95 < 0, 0, mod.conc.u95)
 
     ## Markdown render call --------------------------------------------------------
     rmarkdown::render(input = "C:/Users/jdouglass/Desktop/NVZ_proformas/SW_2017_NVZ_proforma_markup.rmd",
