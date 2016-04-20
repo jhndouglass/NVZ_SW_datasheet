@@ -134,6 +134,7 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         mon.2009 <- nvz.curr$X2009_Main_Mon_Class
         mon.2013 <- nvz.curr$X2013_Main_mon_Class
         mon.2017 <- nvz.curr$X2017_Main_Mon_Class
+        mod.2009 <- nvz.curr$X2009_Main_Mod_Class
         mod.2013 <- nvz.curr$X2013_Main_Mod_Class
         mod.2017 <- nvz.curr$X2017_Main_Mod_Class
         mon.conc <- round(nvz.curr$Main_Current_est, 2)
@@ -335,11 +336,8 @@ for (nvz in unique(nvzs$NVZ_ID)) {
 
     ## get text to explain current 95th percentile estiamtes
     if (tolower(mon.type) == "weibull/qr") {
-        curr.est.text <- "The green bar represents the confidence intervals
-        around the current 95^th^ percentile."
-    } else  {curr.est.text <- "The left most dashed blue line represents
-                               mid-2015. Where is it crosses the dark blue line is
-                               the current 95^th^ percentile."
+        curr.est.text <- "the green bar represents the confidence intervals around the current 95^th^ percentile"
+    } else  {curr.est.text <- "the left most dashed blue line represents mid-2015. Where is it crosses the dark blue line is the current 95^th^ percentile"
     }
 
     ## this is done very verbosely...
@@ -352,6 +350,6 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     ## Markdown render call --------------------------------------------------------
     rmarkdown::render(input = "C:/Users/jdouglass/Desktop/NVZ_proformas/SW_2017_NVZ_proforma_markup.rmd",
                       output_format = "pdf_document",
-                      output_file = paste0("Data_Sheet_", nvz.wb, ".pdf"),
+                      output_file = paste0("Data_Sheet_", nvz.id, ".pdf"),
                       output_dir = "C:/Users/jdouglass/Desktop/NVZ_proformas")
 }
