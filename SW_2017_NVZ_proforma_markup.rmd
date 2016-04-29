@@ -1,7 +1,7 @@
 ---
-title: "Nitrate Vulnerable Zone (NVZ) designation 2017 - Surface Water"
-subtitle: "Version 1.0"
-date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+title: "DATASHEET: \newline Nitrate Vulnerable Zone (NVZ) designation 2017 - Surface Water"
+date: "Publication Date: `r date`"
+subtitle: "NVZ ID: `r nvz.id` \newline NVZ Name: `r nvz.name`"
 output: 
     pdf_document: 
       latex_engine: xelatex
@@ -15,7 +15,7 @@ urlcolor: blue
 header-includes:
 - \usepackage{fancyhdr}
 - \pagestyle{fancy}
-- \fancyfoot[CO,CE]{NVZ `r nvz.id` - `r nvz.name`}
+- \fancyfoot[CO,CE]{NVZ ID: `r nvz.id` \newline NVZ Name: `r nvz.name`}
 - \fancyfoot[LE,RO]{\thepage}
 ---
 
@@ -48,9 +48,39 @@ The contribution of agriculture to the observed nitrate pollution in this NVZ ha
 
 \tableofcontents
 
+\newpage
+
+# Introduction
+
+**NVZ name: `r nvz.name`**  
+**NVZ ID: `r nvz.id`**  
+
+This document provides a summary of the evidence used in proposing an area of land as one which should be, or should continue to be, designated as a Nitrate Vulnerable Zone (NVZ) for the purposes of the Nitrate Pollution Prevention Regulations 2015. 
+
+A full description of the methods used in developing the NVZ proposals is set out in the detailed methodology for surface water NVZs, available via !(http://apps.environment-agency.gov.uk/wiyby/141443.aspx)[apps.environment-agency.gov.uk/wiyby/141443.aspx] . These methods were developed under the guidance of a review group convened by the Defra for the last NVZ review (2011-2013), which included representatives from the farming and water industries as well as independent academic experts. Minor refinements to the methods have been made for the current review.
+
+Under the surface water method a water is designated if is it affected by polluted or could be affected by pollution. 
+
+## Core principles  
+
+1. Each NVZ review takes the previous designations as the starting point and most designations are continuations of those designations.
+2. Evidence of pollution is based on a combination of monitoring data, recent and longer term trends, and modelled data.
+3. A water is affected by pollution if our monitoring or modelling evidence, or a combination of the two, confidently assesses that the 95^th^ percentile[^1] concentration of nitrate exceeds 50 mgl^-1^ (as nitrate (NO~3~)).
+4. A water could be affected by polltion if our monitoring evidence indicates 95^th^ percentile concentrations will exceed 50 mgl^-1^ nitrate in the near future (2020).
+5. We include all inorganic nitrogen (N) compounds in our assessment, not just nitrate. 50 mgl^-1^ nitrate (as NO~3~) is equivalent to 11.3 mgl^-1^ nitrate (as N). As nitrogen can readily transform we include all commonly monitored forms of inorganic nitrogen, nitrate, nitrite and ammonium (referred to as Total Inorganic Nitrogen (TIN) when summed). All water quality data presented below is TIN and is compared to 11.3 mgl^-1^ to determine if the water is polluted or at risk of pollution.
+6. If a sample point is downstream of a sewage treatment works or other point source consented discharge[^2] we assess whether the sample point is representative of the wider water quality of the catchment, in terms of nitrate. We do not automatically discount such sample points, a comprehensive national and local screening procedure is used to determine if a sample point should be removed from our analysis.
+7. We use the Water Framework Directive river waterbodies as our units of assessment.  If one part of that unit is considered to be polluted (or at risk of being polluted) then the entire unit is designated.  This is the case even if the sole monitoring point that shows evidence of poor water quality is in the upper (upstream) section of that unit and downstream monitoring points show no pollution. For 'catchment' designations the designated NVZ is all land that drains to the designating waterbody. For 'waterbody' designations the designated NVZ covers only the designating waterbody.
+8. All existing designation are continued unless there we can be confident that the water is no longer polluted and is not at risk of becoming polluted. We have already considered whether existing designations are eligible for removal. 
+9. All proposed designations are developed close working between national and area Environment Agency staff with quality assurance through discussions at workshops.
+
+We review the evidence every four years, and we believe that NVZ designation is justified in the area that is described in this data sheet. 
+
+[^1]: A 95^th^ percentile is the value exceeded by 5% of samples. It is used instead of a maximum value as it more stable and less sensitive to extreme events.
+[^2]: Consented discharge means all point source discharges that are consented to discharge to controlled waters by the Environment Agency. This includes sewage treatment works (sometimes also refereed to as waste water treatment works), industrial discharges, private sewage discharges, intermittent sewage discharges, landfills & all other discharge types.
+
 \newpage  
 
-The maps presented here were correct as of the date given above. All maps are presented as watershed boundaries, the final NVZ extent is mapped to field boundaries. As the appeals process progresses there will be further changes to NVZ extent, please visit [www.gov.uk/wiyby/nvz](www.gov.uk/wiyby/nvz) for the most up to date NVZ extent maps.
+Please note that any maps shown here have not used detailed field boundaries and therefore represent the indicative 'soft' boundary only. The definitive NVZ area can be seen on the “What’s in Your Backyard”(WIYBY) website !(http://apps.environment-agency.gov.uk/wiyby/141443.aspx)[apps.environment-agency.gov.uk/wiyby/141443.aspx].
 
 
 The maps featured in this report are subject to at least one of the following copyright statements;  
@@ -60,34 +90,6 @@ The maps featured in this report are subject to at least one of the following co
 
 
 ---
-
-\newpage
-
-# Introduction
-
-**NVZ name: `r nvz.name`**  
-**NVZ ID: `r nvz.id`**  
-
-This document presents the evidence in support of this area as a Nitrate Vulnerable Zone (NVZ) as of 1^st^ January 2017.  This designation is based on the Surface Water methodology, which uses a combination of monitored and modelled evidence  to determine if river waterbodies are polluted or at risk of being polluted.  
-
-This document will summarise why this area is considered to drain to a waterbody that is polluted or at risk of being polluted.  For more details on the method, please refer to the full surface water methodology -- [www.gov.uk/nvz_test_xyz](www.gov.uk/nvz_test_xyz).  
-
-
-## Core principles  
-
-1. Each NVZ review takes the previous designations as the starting point and most designations are continuations of those designations.
-2. Evidence of pollution is based on a combination of monitoring data, recent and longer term trends, and modelled data.
-3. Water is polluted if our monitoring or modelling evidence, or a combination of the two, confidently assesses that the 95^th^ percentile[^1] concentration of nitrate exceeds 50 mgl^-1^ (as nitrate (NO~3~)).
-4. Water is at risk of being polluted if our monitoring evidence indicates 95^th^ percentile concentrations will exceed 50 mgl^-1^ nitrate in the near future (2020).
-5. We include all inorganic nitrogen (N) compounds in our assessment, not just nitrate. 50 mgl^-1^ nitrate (as NO~3~) is equivalent to 11.3 mgl^-1^ nitrate (as N). As nitrogen can readily transform we include all commonly monitored forms of inorganic nitrogen, nitrate, nitrite and ammonium (referred to as Total Inorganic Nitrogen (TIN) when summed). All water quality data presented below is TIN and is compared to 11.3 mgl^-1^ to determine if the water is polluted or at risk of pollution.
-6. If a sample point is downstream of a sewage treatment works or other point source consented discharge[^2] we assess whether the sample point is representative of the wider water quality of the catchment, in terms of nitrate. We do not automatically discount such sample points, a comprehensive national and local screening procedure is used to determine if a sample point should be removed from our analysis.
-7. We use the Water Framework Directive river waterbodies as our units of assessment.  If one part of that unit is considered to be polluted (or at risk of being polluted) then the entire unit is designated.  This is the case even if the sole monitoring point that shows evidence of poor water quality is in the upper (upstream) section of that unit and downstream monitoring points show no pollution. For 'catchment' designations the designated NVZ is all land that drains to the designating waterbody. For 'waterbody' designations the designated NVZ covers only the designating waterbody.
-8. All existing designation are continued unless there we can be confident that the water is no longer polluted and is not at risk of becoming polluted. We have already considered whether existing designations are eligible for removal. 
-
-We review the evidence every four years, and we believe that NVZ designation is justified in the area that is described in this data sheet. 
-
-[^1]: A 95^th^ percentile is the value exceeded by 5% of samples. It is used instead of a maximum value as it more stable and less sensitive to extreme events.
-[^2]: Consented discharge means all point source discharges that are consented to discharge to controlled waters by the Environment Agency. This includes sewage treatment works (sometimes also refereed to as waste water treatment works), industrial discharges, private sewage discharges, intermittent sewage discharges, landfills & all other discharge types.
 
 \newpage
 
