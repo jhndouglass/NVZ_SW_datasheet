@@ -15,8 +15,11 @@
 ##
 ################################################################################
 ## Library Statements
+library(knitr)
 library(markdown)
 library(rmarkdown)
+library(png)
+library(grid)
 library(ggplot2)
 
 ################################################################################
@@ -52,10 +55,19 @@ LinesGraph <- function(concs) {
     p <- p + ggplot2::theme_void()
     p
 }
+
+FigCount <- function(ii) {
+    ii <- ii + 1
+}
+
+TabCount <- function(ii) {
+    ii <- ii + 1
+}
+
 ## EXECUTED STATEMENTS----------------------------------------------------------
 nvzs <- read.csv("DatasheetExport.csv",
                  stringsAsFactors = FALSE)
-nvzs <- nvzs[10, ]
+nvzs <- nvzs[75, ]
 
 new.text <- read.csv("designation_new_text.csv", row.names = 1,
                      stringsAsFactors = FALSE)
@@ -65,18 +77,36 @@ existing.text <- read.csv("designation_existing_text.csv", row.names = 1,
                           stringsAsFactors = FALSE)
 names(existing.text) <- c("improved", "remained stable", "deteriorated", "notused")
 
+modified.text <- read.csv("designation_modified_text.csv", row.names = 1,
+                          stringsAsFactors = FALSE)
+names(modified.text) <- c("improved", "remained stable", "deteriorated", "notused")
+
 sep_local <- read.csv("seperate_local.csv")
 sep_cumulative <- read.csv("seperate_cumulative.csv")
 sep_cycle1 <- read.csv("seperate_cycle1_list.csv")
+sep_cycle1.us <- read.csv("seperate_cycle1_list_us.csv")
 
 source.app <- read.csv("SourceApp.csv",
                        stringsAsFactors = FALSE)
+
+smpts <- read.csv("sample_points_in_nvz.csv", stringsAsFactors = FALSE)
+
+fig.count <- 0
+tab.count <- 0
+
+version <- 1
+
+#date <- as.Date('01/06/2016', format = '%d/%m/%Y')
+#date <- format(date, '%d/%m/%Y')
+date <- "June 2016"
 
 ## knitr loop ------------------------------------------------------------------
 for (nvz in unique(nvzs$NVZ_ID)) {
     nvz.curr <- nvzs[nvzs$NVZ_ID == nvz, ]
     source.app.curr <- source.app[source.app$NVZ_ID == nvz, ]
+    smpts.curr <- smpts[smpts$NVZ_ID == nvz, ]
     nvz.name <- nvz.curr$NVZ_NAME
+    nvz.name.short <- substr(nvz.name, 0, nchar(nvz.name) - 4)
     nvz.id <- nvz.curr$NVZ_ID
     nvz.wb <- nvz.curr$MAP_WB
     nvz.area <- round(nvz.curr$POLYAREA, 2)
@@ -127,8 +157,8 @@ for (nvz in unique(nvzs$NVZ_ID)) {
                                 "_modelling_catchment_cycle", nvz.type3, "_map.png")
         ## A list of sample points needs to be included in main table driving
         ## reports.
-        all.smpts <- c("45212350", "45213020", "45214350", "45215500",
-                       "45216170", "45217250", "45220500", "45221950") #!!!!
+        all.smpts <- smpts.curr$SMPT_ID
+        all.smpts.names <- smpts.curr$smpt_short_name
         mult.graph <- paste0("SW TIN PNG Files/", all.smpts, ".png")
         mon.type <- nvz.curr$Main_Method
         mon.2009 <- nvz.curr$X2009_Main_Mon_Class
@@ -155,11 +185,16 @@ for (nvz in unique(nvzs$NVZ_ID)) {
             mod.conc.u75 <- round(nvz.curr$TIN_C_u75, 2)
             mod.conc.l75 <- round(nvz.curr$TIN_C_l75, 2)
         } else {
-            mod.conc <- round(nvz.curr$Cyc2_TIN_C_Q95, 2)
-            mod.conc.u95 <- round(nvz.curr$Cyc2_TIN_C_u95, 2)
-            mod.conc.l95 <- round(nvz.curr$Cyc2_TIN_C_l95, 2)
-            mod.conc.u75 <- round(nvz.curr$Cyc2_TIN_C_u75, 2)
-            mod.conc.l75 <- round(nvz.curr$Cyc2_TIN_C_l75, 2)
+            #mod.conc <- round(nvz.curr$Cyc2_TIN_C_Q95, 2)
+            #mod.conc.u95 <- round(nvz.curr$Cyc2_TIN_C_u95, 2)
+            #mod.conc.l95 <- round(nvz.curr$Cyc2_TIN_C_l95, 2)
+            #mod.conc.u75 <- round(nvz.curr$Cyc2_TIN_C_u75, 2)
+            #mod.conc.l75 <- round(nvz.curr$Cyc2_TIN_C_l75, 2)
+            mod.conc <- round(nvz.curr$TIN_C_Q95, 2)
+            mod.conc.u95 <- round(nvz.curr$TIN_C_u95, 2)
+            mod.conc.l95 <- round(nvz.curr$TIN_C_l95, 2)
+            mod.conc.u75 <- round(nvz.curr$TIN_C_u75, 2)
+            mod.conc.l75 <- round(nvz.curr$TIN_C_l75, 2)
         }
         ps.load.min <- round(source.app.curr$Cat_AvgPntSrc_TIN_kgYr, 2)
         ps.load.max <- round(source.app.curr$Cat_MaxPntSrc_TIN_kYr, 2)
@@ -172,8 +207,8 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         otherag.load <- round(source.app.curr$CAT_SPR_OT_KG, 2)
         total.load.agmin <- round(source.app.curr$AGMIN_CAT_TOTALN_kgYr, 2)
         total.load.agmax <- round(source.app.curr$AGMAX_Cat_TotalN_kgYr, 2)
-        perc.ag.load.min <- round(source.app.curr$Cat_AgMin_PropAg * 100, 2)
-        perc.ag.load.max <- round(source.app.curr$Cat_AGMAx_PropAg * 100, 2)
+        perc.ag.load.min <- round(source.app.curr$Cat_AgMin_PropAg * 100, 1)
+        perc.ag.load.max <- round(source.app.curr$Cat_AGMAx_PropAg * 100, 1)
         arable.area <- round(nvz.curr$NVZ_AR_HA, 2)
         grass.area <- round(nvz.curr$NVZ_PG_HA,2)
         rough.area <- round(nvz.curr$NVZ_RG_HA, 2)
@@ -214,7 +249,8 @@ for (nvz in unique(nvzs$NVZ_ID)) {
                                 "_modelling_catchment_cycle", nvz.type3, "_map.png")
         ## A list of sample points needs to be included in main table driving
         ## reports.
-        all.smpts <- c("PWRR0007", "PWRR0002") #!!!!!
+        all.smpts <- smpts.curr$SMPT_ID
+        all.smpts.names <- smpts.curr$smpt_short_name
         mult.graph <- paste0("SW TIN PNG Files/", all.smpts, ".png")
         mon.type <- nvz.curr$Trib_Method
         mon.2009 <- nvz.curr$X2009_WB_Mon_Class
@@ -241,11 +277,16 @@ for (nvz in unique(nvzs$NVZ_ID)) {
             mod.conc.u75 <- round(nvz.curr$TIN_WB_u75, 2)
             mod.conc.l75 <- round(nvz.curr$TIN_WB_l75, 2)
         } else {
-            mod.conc <- round(nvz.curr$Cyc2_TIN_WB_Q95, 2)
-            mod.conc.u95 <- round(nvz.curr$Cyc2_TIN_WB_u95, 2)
-            mod.conc.l95 <- round(nvz.curr$Cyc2_TIN_WB_l95, 2)
-            mod.conc.u75 <- round(nvz.curr$Cyc2_TIN_WB_u75, 2)
-            mod.conc.l75 <- round(nvz.curr$Cyc2_TIN_WB_l75, 2)
+            #mod.conc <- round(nvz.curr$Cyc2_TIN_C_Q95, 2)
+            #mod.conc.u95 <- round(nvz.curr$Cyc2_TIN_C_u95, 2)
+            #mod.conc.l95 <- round(nvz.curr$Cyc2_TIN_C_l95, 2)
+            #mod.conc.u75 <- round(nvz.curr$Cyc2_TIN_C_u75, 2)
+            #mod.conc.l75 <- round(nvz.curr$Cyc2_TIN_C_l75, 2)
+            mod.conc <- round(nvz.curr$TIN_C_Q95, 2)
+            mod.conc.u95 <- round(nvz.curr$TIN_C_u95, 2)
+            mod.conc.l95 <- round(nvz.curr$TIN_C_l95, 2)
+            mod.conc.u75 <- round(nvz.curr$TIN_C_u75, 2)
+            mod.conc.l75 <- round(nvz.curr$TIN_C_l75, 2)
         }
         ps.load.min <- round(source.app.curr$WB_AvgPntSrc_TIN_kgYr, 2)
         ps.load.max <- round(source.app.curr$WB_MaxPntSrc_TIN_kYr, 2)
@@ -258,8 +299,8 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         otherag.load <- round(source.app.curr$WB_SPR_OT_KG, 2)
         total.load.agmin <- round(source.app.curr$AGMIN_WB_TOTAL_N_kgYr, 2)
         total.load.agmax <- round(source.app.curr$AGMAX_WB_TOTALN_kgyr, 2)
-        perc.ag.load.min <- round(source.app.curr$WB_Min_PropAg * 100, 2)
-        perc.ag.load.max <- round(source.app.curr$WB_Max_PropAg * 100, 2)
+        perc.ag.load.min <- round(source.app.curr$WB_Min_PropAg * 100, 1)
+        perc.ag.load.max <- round(source.app.curr$WB_Max_PropAg * 100, 1)
         arable.area <- round(nvz.curr$NVZ_AR_HA, 2)
         grass.area <- round(nvz.curr$NVZ_PG_HA,2)
         rough.area <- round(nvz.curr$NVZ_RG_HA, 2)
@@ -295,17 +336,25 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     }
 
     ## get text to explain status of NVZ
-    if (tolower(nvz.type1) == "existing" || tolower(nvz.type1 == "modified")) {
+    if (tolower(nvz.type1) == "existing") {
         nvz.des.text <- existing.text[which(row.names(existing.text) == mon.change.text),
                                       which(names(existing.text) == mod.change.text)]
         nvz.type1.text <- "an existing"
-    } else {
+    }
+
+    if (tolower(nvz.type1) == "new") {
         nvz.des.text <- new.text[which(row.names(new.text) == mon.change.text),
                                  which(names(new.text) == mod.change.text)]
         nvz.type1.text <- "a new"
     }
 
+    if (tolower(nvz.type1) == "modified") {
+        nvz.des.text <- modified.text[which(row.names(modified.text) == mon.change.text),
+                                      which(names(modified.text) == mod.change.text)]
+        nvz.type1.text <- "a modified"
+    }
 
+    ## Mod/Mon confidence
     if (mon.2017 == 0) {
         mon.change.text.long <- "We did not use monitoring evidence in making this designation"
     } else {
@@ -336,7 +385,7 @@ for (nvz in unique(nvzs$NVZ_ID)) {
 
     ## get text to explain current 95th percentile estiamtes
     if (tolower(mon.type) == "weibull/qr") {
-        curr.est.text <- "the green bar represents the confidence intervals around the current 95^th^ percentile"
+        curr.est.text <- "the green bar represents the shows the current 95^th^ percentile, the green shaded areas show the uncertainty in the current 95^th^ percentile, we have high confidence that the current 95^th^ percentile lies within the light green shaded area and moderate confidence that the current 95^th^ percentile lies within the dark green shaded area"
     } else  {curr.est.text <- "the left most dashed blue line represents mid-2015. Where is it crosses the dark blue line is the current 95^th^ percentile"
     }
 
@@ -348,8 +397,8 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     mod.conc.u95 <- ifelse(mod.conc.u95 < 0, 0, mod.conc.u95)
 
     ## Markdown render call --------------------------------------------------------
-    rmarkdown::render(input = "C:/Users/jdouglass/Desktop/NVZ_proformas/SW_2017_NVZ_proforma_markup.rmd",
-                      output_format = "pdf_document",
-                      output_file = paste0("Data_Sheet_", nvz.id, ".pdf"),
-                      output_dir = "C:/Users/jdouglass/Desktop/NVZ_proformas")
+    render(input = paste0(getwd(), "/SW_2017_NVZ_proforma_markup.rmd"),
+           output_format = "pdf_document",
+           output_file = paste0("Data_Sheet_", nvz.id, ".pdf"),
+           output_dir = paste0(getwd(), "/out"))
 }
