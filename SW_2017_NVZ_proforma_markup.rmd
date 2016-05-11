@@ -25,6 +25,7 @@ library(rmarkdown)
 library(png)
 library(grid)
 library(ggplot2)
+library(pander)
 ```
 
 
@@ -37,7 +38,7 @@ grid.raster(img)
 
 \newpage
 
-This document contains a summary of the evidence used to designate NVZ `r nvz.id` - `r nvz.name.short`. It was produced on `r date` by the Environment Agency on behalf of the Secretary of State for the Environment.
+This document contains a summary of the evidence used to designate NVZ `r nvz.id` - `r nvz.name.short`. It was produced `r date` by the Environment Agency on behalf of the Secretary of State for the Environment.
 
 `r additional.info` 
 
@@ -64,7 +65,7 @@ Under the surface water method a water is designated if is it affected by pollut
 
 ---
 
-Please note that any maps shown here have not used detailed field boundaries and therefore represent the indicative 'soft' boundary only. The definitive NVZ area can be seen on the “What’s in Your Backyard”(WIYBY) website [http://apps.environment-agency.gov.uk/wiyby/141443.aspx](apps.environment-agency.gov.uk/wiyby/141443.aspx).
+Please note that any maps shown here have not used detailed field boundaries and therefore represent the indicative 'soft' boundary only. The definitive NVZ area can be seen on the What's in Your Backyard (WIYBY) website [http://apps.environment-agency.gov.uk/wiyby/141443.aspx](apps.environment-agency.gov.uk/wiyby/141443.aspx).
 
 
 The maps featured in this report are subject to at least one of the following copyright statements;  
@@ -425,6 +426,7 @@ if (load.yes) {
     fig.count2 <- FigCount(fig.count)
     load.text2 <- paste0("Figures ", fig.count, " and ", fig.count2, " shows the information in table ", tab.count, " presented as percentage apportionment to individual sectors. Figure ", fig.count, " shows the minimum agricultural contribution and figure ", fig.count2, " shows the maximum agricultural contribution.")
     cat("\n", load.text2, "\n")
+    fig.count <- fig.count2
 }
 ```
 
@@ -478,13 +480,6 @@ Regardless of whether load apportionment estimates are available for this NVZ, a
 
 SEPERATE (SEctor Pollutant AppoRtionment for the AquaTic Environment) is a national scale multiple pollutant source apportionment framework developed by ADAS, Rothamsted Research, Centre for Ecology and Hydrology and the Environment Agency. SEPERATE uses data on sources of total nitrogen including agricultural practice, sewage treatment works, combined sewer overflows, storm tanks & septic tanks, to apportion the load input to the aquatic environment into individual sectors.  
 
-```{r seperate_text, echo=FALSE}
-
-
-
-
-```
-
 ```{r seperate_main, echo = FALSE, results = "asis"}
 
 sep.yes <- FALSE
@@ -527,8 +522,8 @@ if (nvz.type3 == 1 && nvz.area >= 25) {
 
 if (sep.yes) {
     tab.count <- TabCount(tab.count)
-    fig.count2 <- FigCount(fig.count2)
-    sep.labels.text <- paste0("Table ",  tab.count, " shows the load SEPERATE estimates is generated persector. Figure ", fig.count2, " shows the same data expressed as a percentage of the total load. Note that for main river designations data is provided for the entire upstream area, while for tributary designations only data from the designating waterbody is provided.")
+    fig.count <- FigCount(fig.count)
+    sep.labels.text <- paste0("Table ",  tab.count, " shows the load SEPERATE estimates is generated persector. Figure ", fig.count, " shows the same data expressed as a percentage of the total load. Note that for main river designations data is provided for the entire upstream area, while for tributary designations only data from the designating waterbody is provided.")
     cat("\n", sep.labels.text, "\n")
 } else {cat("\n", sep.pholder.text, "\n")}
 ```
@@ -598,7 +593,7 @@ if (exists("simcat.conc")) {
 We have used land cover and livestock information as part of the method to derive this designation. It is used to drive the NEAP N model[^3] and the estimate of urban N load which are both input to the land use model. We take our land cover and livestock data from the 2014 Defra June agricultural survey[^7]. We have included the data below for this designation.
 
 ```{r lc_plot, echo = FALSE, results = "asis", fig.cap = "Landcover area by category from 2014 Defra agricultural survey", fig.height = 3, fig.width = 6}
-fig.count2 <- FigCount(fig.count2)
+fig.count <- FigCount(fig.count)
 landuse <- c(arable.area, grass.area, rough.area, wood.area, 
              urban.area)
 landuse.names <- c("Arable", "Permanent grassland", "Rough grazing",
@@ -634,10 +629,10 @@ kable(livestock, caption = "Count of livestock within NVZ designation from 2014 
 ## Agricultural load over time
 
 ```{r fig_count_neap, echo = FALSE, results = "asis"}
-fig.count2 <- FigCount(fig.count2)
+fig.count <- FigCount(fig.count)
 ```
 
-Figure `r fig.count2` shows how the nitrate available for leaching from agricultural sources, as predicted by the ADAS NEAP N model[^3], varies over time for this NVZ designation. The data is presented relative to a baseline (the year 2000). The NEAP N model uses long term average climate data, so changes in nitrate available for leaching is due solely to changes in cropping and livestock within the NVZ. 
+Figure `r fig.count` shows how the nitrate available for leaching from agricultural sources, as predicted by the ADAS NEAP N model[^3], varies over time for this NVZ designation. The data is presented relative to a baseline (the year 2000). The NEAP N model uses long term average climate data, so changes in nitrate available for leaching is due solely to changes in cropping and livestock within the NVZ. 
 
 ![Nitrate avaialble for leaching across NVZ `r nvz.id` relative to 2000 baseline due to cropping and livestock](`r neap.graph`)
 
@@ -680,11 +675,15 @@ for (i in 1:length(mult.graph)){
 ## Appendix 2 - Discharge constent conditions
 
 ``` {r dischrages_table, echo = FALSE, results = "asis"}
-kable(source.table, caption = paste0("Summary of sources of nitrogen 
-                                     compounds within NVZ", nvz.id))
+source.table <- source.table[, -1]
+row.names(source.table) <- 1:nrow(source.table)
+cap <- paste0("Summary of sources of nitrogen compounds within 
+                       NVZ ", nvz.id)
+set.alignment('left', row.names = NULL)
+pandoc.table(source.table, caption = cap, justify = "left",
+             split.cells = 7)
 ```
 
-In the table above flow is given in mega  per day (Mld^-1^), concentration in milligrams per litre (mgl^-1^ as N) expressed as N and load in kilograms per day as N (kgd^-1^ as N). 
 
 [^8]: Lerner, D., 2000. Guidelines for estimating urban loads of nitrogen to groundwater, NT1845, Report to Defra.
 

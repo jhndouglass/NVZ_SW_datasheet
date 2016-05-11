@@ -21,6 +21,7 @@ library(rmarkdown)
 library(png)
 library(grid)
 library(ggplot2)
+library(pander)
 
 ################################################################################
 ## FUNCTION DEFINITIONS---------------------------------------------------------
@@ -65,9 +66,13 @@ TabCount <- function(ii) {
 }
 
 ## EXECUTED STATEMENTS----------------------------------------------------------
+pri <- read.csv("priority _NVZ.csv", stringsAsFactors = FALSE)
+pri <- pri[, 1]
+
 nvzs <- read.csv("DatasheetExport.csv",
                  stringsAsFactors = FALSE)
-nvzs <- nvzs[75, ]
+#nvzs <- nvzs[75, ]
+nvzs <- nvzs[nvzs$NVZ_ID %in% pri, ]
 
 new.text <- read.csv("designation_new_text.csv", row.names = 1,
                      stringsAsFactors = FALSE)
@@ -91,6 +96,9 @@ source.app <- read.csv("SourceApp.csv",
 
 smpts <- read.csv("sample_points_in_nvz.csv", stringsAsFactors = FALSE)
 
+sources <- read.csv("MassBalance_individual_loads.csv",
+                    stringsAsFactors = FALSE)
+
 fig.count <- 0
 tab.count <- 0
 
@@ -107,7 +115,7 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     smpts.curr <- smpts[smpts$NVZ_ID == nvz, ]
     nvz.name <- nvz.curr$NVZ_NAME
     nvz.name.short <- substr(nvz.name, 0, nchar(nvz.name) - 4)
-    nvz.id <- nvz.curr$NVZ_ID
+    nvz.id <- paste0("S-", nvz.curr$NVZ_ID)
     nvz.wb <- nvz.curr$MAP_WB
     nvz.area <- round(nvz.curr$POLYAREA, 2)
     nvz.type1 <- nvz.curr$NVZ_TYPE
@@ -119,14 +127,10 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     workshop.discussion <- nvz.curr$Workshop_discussion_summary
     overview.map <- paste0("Overview maps/", nvz.wb, "_overviewmap.png")
     monitoring.map <- paste0("Monitoring maps/", nvz.wb, "_monitoringmap.png")
-    ## The table of source must be supplied to the program as a table - chat
-    ## with chris.
-    source.table <- read.csv(paste0("N sources tables/", nvz.wb,
-                                    "_source_loads.csv"))
-    names(source.table) <- c("Discharge", "Data source", "Average flow",
-                             "Average concentration",
-                             "Average load")
-
+    source.table <- sources[sources$NVZ_ID == nvz, ]
+    names(source.table) <- c("NVZ ID", "Source type", "Source sub-type",
+                             "Source name", "Lower load (N kg yr ^-1^)",
+                             "Upper load (N kg yr ^-1^)")
     ## assign modelling and monitoring scores from current and previous
     ## designation rounds and get count of failing samplwe points text
     if (nvz.type2 == "C") {
@@ -395,6 +399,18 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     mod.conc.l95 <- ifelse(mod.conc.l95 < 0, 0, mod.conc.l95)
     mod.conc.u75 <- ifelse(mod.conc.u75 < 0, 0, mod.conc.u75)
     mod.conc.u95 <- ifelse(mod.conc.u95 < 0, 0, mod.conc.u95)
+
+    mon.conc <- ifelse(mon.conc < 0, 0, mon.conc)
+    mon.conc.l75 <- ifelse(mon.conc.l75 < 0, 0, mon.conc.l75)
+    mon.conc.l95 <- ifelse(mon.conc.l95 < 0, 0, mon.conc.l95)
+    mon.conc.u75 <- ifelse(mon.conc.u75 < 0, 0, mon.conc.u75)
+    mon.conc.u95 <- ifelse(mon.conc.u95 < 0, 0, mon.conc.u95)
+
+    trend.conc <- ifelse(trend.conc < 0, 0, trend.conc)
+    trend.conc.l75 <- ifelse(trend.conc.l75 < 0, 0, trend.conc.l75)
+    trend.conc.l95 <- ifelse(trend.conc.l95 < 0, 0, trend.conc.l95)
+    trend.conc.u75 <- ifelse(trend.conc.u75 < 0, 0, trend.conc.u75)
+    trend.conc.u95 <- ifelse(trend.conc.u95 < 0, 0, trend.conc.u95)
 
     ## Markdown render call --------------------------------------------------------
     render(input = paste0(getwd(), "/SW_2017_NVZ_proforma_markup.rmd"),
