@@ -71,8 +71,8 @@ pri <- pri[, 1]
 
 nvzs <- read.csv("DatasheetExport.csv",
                  stringsAsFactors = FALSE)
-#nvzs <- nvzs[75, ]
-nvzs <- nvzs[nvzs$NVZ_ID %in% pri, ]
+nvzs <- nvzs[75, ]
+#nvzs <- nvzs[nvzs$NVZ_ID %in% pri, ]
 
 new.text <- read.csv("designation_new_text.csv", row.names = 1,
                      stringsAsFactors = FALSE)
@@ -319,9 +319,9 @@ for (nvz in unique(nvzs$NVZ_ID)) {
 
     ## get text to indicate how monitoring score has changed
     if (mon.2017 != 0) {
-        if (mon.2017 > max(mon.2013, mon.2009)) {
+        if (mon.2017 > mon.2013) {
             mon.change.text <- "deteriorated"
-        } else {if (mon.2017 == max(mon.2013, mon.2009)) {
+        } else {if (mon.2017 == mon.2013) {
             mon.change.text <- "remained stable"
         } else {mon.change.text <- "improved" }}
     } else {
@@ -330,9 +330,9 @@ for (nvz in unique(nvzs$NVZ_ID)) {
 
     ## get text to indicate how modelling score has changed
     if (mod.2017 != 0) {
-        if (mod.2017 > max(mod.2013, mod.2009)) {
+        if (mod.2017 > mod.2013) {
             mod.change.text <- "deteriorated"
-        } else {if (mod.2017 == max(mod.2013, mod.2009)) {
+        } else {if (mod.2017 == mod.2013) {
             mod.change.text <- "remained stable"
         } else {mod.change.text <- "improved" }}
     } else {
@@ -370,7 +370,7 @@ for (nvz in unique(nvzs$NVZ_ID)) {
                                 "5" = "Based on our assessment of monitoring data we have moderate confidence that water is polluted.",
                                 "6" = "Based on our assessment of monitoring data we have high confidence that the water is polluted.")
 
-        mon.change.text.long <- paste0("Our assessment of monitoring data shows that water quality in this NVZ has ", mon.change.text, " in the 2017 NVZ review period compared to the previous two NVZ reviews. ", mon.conf.text)
+        mon.change.text.long <- paste0("Our assessment of monitoring data shows that water quality in this NVZ has ", mon.change.text, " in the 2017 NVZ review period compared to the previous NVZ review. ", mon.conf.text)
     }
 
     if (mod.2017 == 0) {
@@ -384,7 +384,7 @@ for (nvz in unique(nvzs$NVZ_ID)) {
                                 "5" = "Based on our modelling assessement we have moderate confidence that water is polluted.",
                                 "6" = "Based on our modelling assessement we have high confidence that the water is polluted.")
 
-        mod.change.text.long <- paste0("Our modelling assessment shows that water quality in this NVZ has ", mod.change.text, " in the 2017 NVZ review period compared to the previous two NVZ reviews. ", mod.conf.text)
+        mod.change.text.long <- paste0("Our modelling assessment shows that water quality in this NVZ has ", mod.change.text, " in the 2017 NVZ review period compared to the previous NVZ review. ", mod.conf.text)
     }
 
     ## get text to explain current 95th percentile estiamtes
