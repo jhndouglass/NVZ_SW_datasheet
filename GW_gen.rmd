@@ -1,0 +1,27 @@
+---
+output: 
+  word_document: 
+    reference_docx: style.docx
+---
+
+```{r library , echo = FALSE}
+library(knitr)
+library(markdown)
+library(rmarkdown)
+library(png)
+library(grid)
+library(ggplot2)
+library(pander)
+```
+
+```{r all_smpt_plots, echo = FALSE, fig.width = 6, fig.height = 4.1, results = "asis", fig.keep = "all"}
+for (i in 1:length(mult.graph)){
+    cat("\n Figure A", i, ": ", all.smpts.short[i], sep = "")
+    cat("\n")
+    cat("\n")
+    img <- readPNG(mult.graph[i])
+    plot.new()
+    grid.raster(img)
+    cat("\n")
+}
+```
