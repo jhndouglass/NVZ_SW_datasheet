@@ -35,7 +35,7 @@ for (nvz in unique(smpts$NVZ_ID)) {
     all.smpts <- nvz.curr$siteID
     all.smpts.short <- substr(all.smpts, 0, nchar(all.smpts) - 2)
     #all.smpts.names <- smpts.curr$smpt_short_name
-    mult.graph <- paste0("GW TIN 45 PNG Files/", all.smpts, ".png")
+    mult.graph <- paste0("GW TIN 43 PNG Files/", all.smpts, ".png")
 
     ## Markdown render call --------------------------------------------------------
     render(input = paste0(getwd(), "/GW_gen.rmd"),
