@@ -66,12 +66,12 @@ TabCount <- function(ii) {
 }
 
 ## EXECUTED STATEMENTS----------------------------------------------------------
-pri <- read.csv("priority _NVZ.csv", stringsAsFactors = FALSE)
-pri <- pri[, 1]
+#pri <- read.csv("priority _NVZ.csv", stringsAsFactors = FALSE)
+#pri <- pri[, 1]
 
-nvzs <- read.csv("DatasheetExport.csv",
+nvzs <- read.csv("DatasheetExport.txt",
                  stringsAsFactors = FALSE)
-nvzs <- nvzs[75, ]
+nvzs <- nvzs[34, ]
 #nvzs <- nvzs[nvzs$NVZ_ID %in% pri, ]
 
 new.text <- read.csv("designation_new_text.csv", row.names = 1,
@@ -91,16 +91,15 @@ sep_cumulative <- read.csv("seperate_cumulative.csv")
 sep_cycle1 <- read.csv("seperate_cycle1_list.csv")
 sep_cycle1.us <- read.csv("seperate_cycle1_list_us.csv")
 
-source.app <- read.csv("SourceApp.csv",
+source.app <- read.csv("SourceApp.txt",
                        stringsAsFactors = FALSE)
 
-smpts <- read.csv("sample_points_in_nvz.csv", stringsAsFactors = FALSE)
+smpts <- read.csv("sample_points_in_nvz.txt", stringsAsFactors = FALSE)
 
-sources <- read.csv("MassBalance_individual_loads.csv",
+sources <- read.csv("MassBalance_individual_loads.txt",
                     stringsAsFactors = FALSE)
 
-fig.count <- 0
-tab.count <- 0
+status <- read.csv("NVZ_status.txt", stringsAsFactors = FALSE)
 
 version <- 1
 
@@ -110,23 +109,26 @@ date <- "June 2016"
 
 ## knitr loop ------------------------------------------------------------------
 for (nvz in unique(nvzs$NVZ_ID)) {
+    fig.count <- 0
+    tab.count <- 0
     nvz.curr <- nvzs[nvzs$NVZ_ID == nvz, ]
     source.app.curr <- source.app[source.app$NVZ_ID == nvz, ]
     smpts.curr <- smpts[smpts$NVZ_ID == nvz, ]
+    status.curr <- status[status$NVZ_ID == nvz, ]
     nvz.name <- nvz.curr$NVZ_NAME
     nvz.name.short <- substr(nvz.name, 0, nchar(nvz.name) - 4)
-    nvz.id <- paste0("S-", nvz.curr$NVZ_ID)
+    nvz.id <- paste0("S", nvz.curr$NVZ_ID)
     nvz.wb <- nvz.curr$MAP_WB
     nvz.area <- round(nvz.curr$POLYAREA, 2)
-    nvz.type1 <- nvz.curr$NVZ_TYPE
+    nvz.type1 <- status.curr$NVZ_STATUS
     nvz.type2 <- nvz.curr$Accumluated_NVZ_type_2017
     nvz.type3 <- nvz.curr$CYCLE
     nvz.prev.sw <- nvz.curr$PropSW13 * 100
     nvz.prev <- nvz.curr$PropNVZ13 * 100
     additional.info <- nvz.curr$Summary_Text
-    workshop.discussion <- nvz.curr$Workshop_discussion_summary
-    overview.map <- paste0("Overview maps/", nvz.wb, "_overviewmap.png")
-    monitoring.map <- paste0("Monitoring maps/", nvz.wb, "_monitoringmap.png")
+    workshop.discussion <- nvz.curr$Workshop_Discussion_summary
+    overview.map <- paste0("Maps/Overview maps/overview_map_", nvz, ".png")
+    monitoring.map <- paste0("Maps/Monitoring maps/monitoring_map_", nvz, ".png")
     source.table <- sources[sources$NVZ_ID == nvz, ]
     names(source.table) <- c("NVZ ID", "Source type", "Source sub-type",
                              "Source name", "Lower load (N kg yr ^-1^)",
@@ -136,10 +138,10 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     if (nvz.type2 == "C") {
         main.wb.scores.text <- "catchment scores"
         nvz.type2.text <- "catchment"
-        smpt.count <- nvz.curr$X2017_main_Smpt_in_WB
-        smpt.count.upstream <- nvz.curr$X2017_Upstream_Main_SMPT + smpt.count
-        fail.count <- nvz.curr$X2017_Main_Fails_in_WB
-        fail.count.upstream <- nvz.curr$X2017_Upstream_Main_River_Fails + fail.count
+        smpt.count <- nvz.curr$X2017_main_Smpt_in_WB + nvz.curr$X2017_trib_Smpt_in_WB
+        smpt.count.upstream <- nvz.curr$X2017_Upstream_Main_SMPT + nvz.curr$X2017_Upstream_trib_SMPT + smpt.count
+        fail.count <- nvz.curr$X2017_Main_Fails_in_WB + nvz.curr$X2017_trib_Fails_in_WB
+        fail.count.upstream <- nvz.curr$X2017_Upstream_Main_River_Fails + nvz.curr$X2017_Upstream_trib_River_Fails + fail.count
         if (fail.count == 0) {
             fail.count.text <- "are no polluted sample points"
         } else{
@@ -155,15 +157,14 @@ for (nvz in unique(nvzs$NVZ_ID)) {
             } else{fail.count.text.upstream <- "one polluted sample point"}
         }
         worst <- nvz.curr$X2017_Main_SMPT_Id
-        worst.graph <- paste0("SW TIN PNG Files/", worst, ".png" )
-        neap.graph <- paste0("NEAPN_graphs/", nvz.wb,"_cycle", nvz.type3, "_catchment_neapn.png")
-        modelling.map <- paste0("Modelling maps/", nvz.wb,
-                                "_modelling_catchment_cycle", nvz.type3, "_map.png")
+        worst.graph <- paste0("Graphs/SW TIN PNG Files/", worst, ".png" )
+        neap.graph <- paste0("Graphs/NEAPN_graphs/", nvz.wb,"_cycle1_catchment_neapn.png")
+        modelling.map <- paste0("Maps/Modelling maps/modelling_map_catchment_", nvz, ".png")
         ## A list of sample points needs to be included in main table driving
         ## reports.
         all.smpts <- smpts.curr$SMPT_ID
         all.smpts.names <- smpts.curr$smpt_short_name
-        mult.graph <- paste0("SW TIN PNG Files/", all.smpts, ".png")
+        mult.graph <- paste0("Graphs/SW TIN PNG Files/", all.smpts, ".png")
         mon.type <- nvz.curr$Main_Method
         mon.2009 <- nvz.curr$X2009_Main_Mon_Class
         mon.2013 <- nvz.curr$X2013_Main_mon_Class
@@ -228,10 +229,10 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     } else {
         main.wb.scores.text <- "waterbody scores"
         nvz.type2.text <- "waterbody"
-        smpt.count <- nvz.curr$X2017_trib_Smpt_in_WB
-        smpt.count.upstream <- nvz.curr$X2017_Upstream_trib_SMPT + smpt.count
-        fail.count <- nvz.curr$X2017_trib_Fails_in_WB
-        fail.count.upstream <- nvz.curr$X2017_Upstream_trib_River_Fails + fail.count
+        smpt.count <- nvz.curr$X2017_main_Smpt_in_WB + nvz.curr$X2017_trib_Smpt_in_WB
+        smpt.count.upstream <- nvz.curr$X2017_Upstream_Main_SMPT + nvz.curr$X2017_Upstream_trib_SMPT + smpt.count
+        fail.count <- nvz.curr$X2017_Main_Fails_in_WB + nvz.curr$X2017_trib_Fails_in_WB
+        fail.count.upstream <- nvz.curr$X2017_Upstream_Main_River_Fails + nvz.curr$X2017_Upstream_trib_River_Fails + fail.count
         if (fail.count == 0) {
             fail.count.text <- "are no polluted sample points"
         } else{
@@ -247,15 +248,14 @@ for (nvz in unique(nvzs$NVZ_ID)) {
             } else{fail.count.text.upstream <- "one polluted sample point"}
         }
         worst <- nvz.curr$Trib_SMPT_Id
-        worst.graph <- paste0("SW TIN PNG Files/", worst, ".png" )
-        neap.graph <- paste0("NEAPN_graphs/", nvz.wb,"_cycle", nvz.type3, "_catchment_neapn.png")
-        modelling.map <- paste0("Modelling maps/", nvz.wb,
-                                "_modelling_catchment_cycle", nvz.type3, "_map.png")
+        worst.graph <- paste0("Graphs/SW TIN PNG Files/", worst, ".png" )
+        neap.graph <- paste0("Graphs/NEAPN_graphs/", nvz.wb,"_cycle1_wb_neapn.png")
+        modelling.map <- paste0("Maps/Modelling maps/modelling_map_wb_", nvz, ".png")
         ## A list of sample points needs to be included in main table driving
         ## reports.
         all.smpts <- smpts.curr$SMPT_ID
         all.smpts.names <- smpts.curr$smpt_short_name
-        mult.graph <- paste0("SW TIN PNG Files/", all.smpts, ".png")
+        mult.graph <- paste0("Graphs/SW TIN PNG Files/", all.smpts, ".png")
         mon.type <- nvz.curr$Trib_Method
         mon.2009 <- nvz.curr$X2009_WB_Mon_Class
         mon.2013 <- nvz.curr$X2013_WB_Mon_Class
@@ -344,23 +344,26 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         nvz.des.text <- existing.text[which(row.names(existing.text) == mon.change.text),
                                       which(names(existing.text) == mod.change.text)]
         nvz.type1.text <- "an existing"
+        nvz.mod.text <- ""
     }
 
     if (tolower(nvz.type1) == "new") {
         nvz.des.text <- new.text[which(row.names(new.text) == mon.change.text),
                                  which(names(new.text) == mod.change.text)]
         nvz.type1.text <- "a new"
+        nvz.mod.text <- ""
     }
 
     if (tolower(nvz.type1) == "modified") {
         nvz.des.text <- modified.text[which(row.names(modified.text) == mon.change.text),
                                       which(names(modified.text) == mod.change.text)]
         nvz.type1.text <- "a modified"
+        nvz.mod.text <- "A modified designation means that at least part of the land covered by the proposed deisgnation is already designated. The designation has been updated to reflect current water quality."
     }
 
     ## Mod/Mon confidence
     if (mon.2017 == 0) {
-        mon.change.text.long <- "We did not use monitoring evidence in making this designation"
+        mon.change.text.long <- "We did not use monitoring evidence in making this designation."
     } else {
         mon.conf.text <- switch(as.character(mon.2017),
                                 "1" = "Based on our assessment of monitoring data we have high confidence that the water is not polluted.",
@@ -374,7 +377,7 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     }
 
     if (mod.2017 == 0) {
-        mod.change.text.long <- "We did not use monitoring evidence in making this designation"
+        mod.change.text.long <- "We did not use modelling evidence in making this designation."
     } else {
         mod.conf.text <- switch(as.character(mod.2017),
                                 "1" = "Based on our modelling assessement we have high confidence that the water is not polluted.",

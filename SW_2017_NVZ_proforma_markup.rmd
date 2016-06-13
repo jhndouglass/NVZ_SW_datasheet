@@ -42,7 +42,7 @@ This document contains a summary of the evidence used to designate NVZ `r nvz.id
 
 `r additional.info` 
 
-`r nvz.name.short` is `r nvz.type1.text` designation. There `r fail.count.text` in the waterbody that designates this NVZ, and, in total, `r fail.count.text.upstream` in the entire NVZ including the designating waterbody and any area upstream of the designating waterbody. `r mon.change.text.long` `r mod.change.text.long` `r nvz.des.text`  
+`r nvz.name.short` is `r nvz.type1.text` designation. `r nvz.mod.text` There `r fail.count.text` in the waterbody that designates this NVZ, and, in total, `r fail.count.text.upstream` in the entire NVZ including the designating waterbody and any area upstream of the designating waterbody. `r mon.change.text.long` `r mod.change.text.long` `r nvz.des.text`  
 
 The contribution of agriculture to the observed nitrate pollution in this NVZ has been assessed and we are confident that agriculture is an important contributor to nitrate pollution.
 
@@ -65,7 +65,7 @@ Under the surface water method a water is designated if is it affected by pollut
 
 ---
 
-Please note that any maps shown here have not used detailed field boundaries and therefore represent the indicative 'soft' boundary only. The definitive NVZ area can be seen on the What's in Your Backyard (WIYBY) website [http://apps.environment-agency.gov.uk/wiyby/141443.aspx](apps.environment-agency.gov.uk/wiyby/141443.aspx).
+Please note that the area of NVZ designation may change during the appeals process. The definitive NVZ area can be seen on the What's in Your Backyard (WIYBY) website [http://apps.environment-agency.gov.uk/wiyby/141443.aspx](apps.environment-agency.gov.uk/wiyby/141443.aspx).
 
 
 The maps featured in this report are subject to at least one of the following copyright statements;  
@@ -80,10 +80,10 @@ The maps featured in this report are subject to at least one of the following co
 1. Each NVZ review takes the previous designations as the starting point and most designations are continuations of those designations.
 2. Evidence of pollution is based on a combination of monitoring data, recent and longer term trends, and modelled data.
 3. A water is affected by pollution if our monitoring or modelling evidence, or a combination of the two, confidently assesses that the 95^th^ percentile[^1] concentration of nitrate exceeds 50 mgl^-1^ (as nitrate (NO~3~)).
-4. A water could be affected by polltion if our monitoring evidence indicates 95^th^ percentile concentrations will exceed 50 mgl^-1^ nitrate in the near future (2020).
+4. A water could be affected by pollution if our monitoring evidence indicates 95^th^ percentile concentrations will exceed 50 mgl^-1^ nitrate in the near future (2020).
 5. We include all inorganic nitrogen (N) compounds in our assessment, not just nitrate. 50 mgl^-1^ nitrate (as NO~3~) is equivalent to 11.3 mgl^-1^ nitrate (as N). As nitrogen can readily transform we include all commonly monitored forms of inorganic nitrogen, nitrate, nitrite and ammonium (referred to as Total Inorganic Nitrogen (TIN) when summed). All water quality data presented below is TIN and is compared to 11.3 mgl^-1^ to determine if the water is affected by pollution or could be affected by pollution.
 6. If a sample point is downstream of a sewage treatment works or other point source consented discharge[^2] we assess whether the sample point is representative of the wider water quality of the catchment, in terms of nitrate. We do not automatically discount such sample points, a comprehensive national and local screening procedure is used to determine if a sample point should be removed from our analysis.
-7. We use the Water Framework Directive river waterbodies as our units of assessment.  If one part of that waterbody is affected by pollution or could be affected by pollution then the entire waterbdoy is designated.  This is the case even if the sole monitoring point that shows evidence of pollution is in the upper (upstream) section of the waterbody and downstream monitoring points show no evidence of pollution. For 'catchment' designations the designated NVZ is all land that drains to the designating waterbody. For 'waterbody' designations the designated NVZ covers only the designating waterbody.
+7. We use the Water Framework Directive river waterbodies as our units of assessment.  If one part of that waterbody is affected by pollution or could be affected by pollution then the entire waterbody is designated.  This is the case even if the sole monitoring point that shows evidence of pollution is in the upper (upstream) section of the waterbody and downstream monitoring points show no evidence of pollution. For 'catchment' designations the designated NVZ is all land that drains to the designating waterbody. For 'waterbody' designations the designated NVZ covers only the designating waterbody.
 8. All existing designation are continued unless there we can be confident that the water is no longer affected by pollution and will not become affected by pollution. We have already considered whether existing designations are eligible for removal.
 9. All proposed designations are developed close working between national and area Environment Agency staff with quality assurance through discussions at workshops.
 
@@ -112,7 +112,7 @@ NVZ ID                                       `r nvz.id`
 
 Area (km^2^)                                 `r nvz.area`
 
-NVZ type (existing/new)                      `r nvz.type1`
+NVZ type (existing/modified/new)             `r nvz.type1`
 
 NVZ type (catchment/waterbody)               `r nvz.type2.text`
 
@@ -182,7 +182,7 @@ kable(scores.tab, caption = "Matrix scores for the last three NVZ reviews")
 ```
 
 
-`r nvz.name.short` is `r nvz.type1.text` designation.  `r mon.change.text.long` `r mod.change.text.long` `r nvz.des.text`
+`r nvz.name.short` is `r nvz.type1.text` designation. `r nvz.mod.text` `r mon.change.text.long` `r mod.change.text.long` `r nvz.des.text`
 
 ```{r figcount_overviewmap, echo = FALSE, results = "asis"}
 
@@ -208,7 +208,7 @@ Figure `r fig.count` shows the area covered by this NVZ.
 tab.count <- TabCount(tab.count)
 
 mon.yes <- FALSE
-mon.pholder.text <- "Monitoring evidence was not used in this designation. There were not any monitoing points with sufficent data in the designation waterbody. Table XX will contain NA (Not Available) values"
+mon.pholder.text <- paste0("Monitoring evidence was not used in this designation. There were not any monitoing points with sufficent data in the designation waterbody. Table ", tab.count, " will contain NA (Not Available) values")
 
 if (mon.2017 != 0) {
     mon.yes <- TRUE
@@ -284,14 +284,14 @@ if (smpt.count.upstream > 0) {
 ```
 
 ```{r mon_text3, echo = FALSE, results = "asis"}
+fig.count <- FigCount(fig.count)
 if (mon.yes) {
-    fig.count <- FigCount(fig.count)
     mon.text3 <- paste0("Figure ", fig.count, " shows the location of the monitoring points in the designating waterbody. The monitoring points are shown as coloured points, the colours show the monitoring class (1-6) of each point.  The monitoring score per sample point is based on the highest of the current and future 95^th^ percentiles. The monitoring score per catchment is taken from the most polluted sample point in the designating waterbody.")
     cat("\n", mon.text3, "\n")
 }
 ```
 
-In figure `r fig.count`, the small crosses represent the outlets of consented discharges[^2]. Any monitoring point that is too close (within the mixing zone) to a consented discharge of nitrogen compounds and therefore not representative of the water quality of the waterbody or is otherwise not representative of the water quality within the waterbody is excluded from the analysis.
+In figure `r fig.count`, the small crosses represent the outlets of consented discharges. Any monitoring point that is too close (within the mixing zone) to a consented discharge of nitrogen compounds and therefore not representative of the water quality of the waterbody or is otherwise not representative of the water quality within the waterbody is excluded from the analysis.
 
 ![Overview of monitoring locations and classes with point source locations](`r monitoring.map`)
 
@@ -315,7 +315,7 @@ The water quality data used in the [monitoring evidence](#monitoring-evidence) c
 tab.count <- TabCount(tab.count)
 
 land.yes <- FALSE
-land.pholder.text <- paste0("Outputs from the land use model were not used in this designation. This is because the area of the designation is less than  20 km^2^. Some of the input data to the land use model (the agricultural land use data) is only reliable at designation sizes grater than 20 km^2^. The land use model summary table (table ", tab.count, ") will contain NA (Not Available) values.")
+land.pholder.text <- paste0("Outputs from the land use model were not used in this designation. The land use model summary table (table ", tab.count, ") will contain NA (Not Available) values.")
 
 
 
@@ -343,7 +343,7 @@ Moderate confidence lower and upper bounds for land use model
 
 -------------------------------------------------------------- ---------------------
 
-: Summary of modelling evidence
+: Summary of `r nvz.type2.text` modelling evidence
 
 
 
@@ -394,7 +394,7 @@ if (nvz.area > 20) {
 
 if (load.yes) {
         tab.count <- TabCount(tab.count)
-    load.text1 <- paste0("We present two figures for load from consented discharges[^2]. The maximum value is based on discharge consent conditions (the conditions consented discharges may not exceed). Therefore the maximum value represents the load emitted from a combination of the greatest flow and the greatest concentration of nitrogen compounds all consented discharges in the catchment may legally emit. The minimum value is based on information from consented discharges with flow and nitrogen concentration monitoring, so represents the most likely load from all consented discharges in the catchment.
+    load.text1 <- paste0("We present two figures for load from consented discharges. The maximum value is based on discharge consent conditions (the conditions consented discharges may not exceed). Therefore the maximum value represents the load emitted from a combination of the greatest flow and the greatest concentration of nitrogen compounds all consented discharges in the catchment may legally emit. The minimum value is based on information from consented discharges with flow and nitrogen concentration monitoring, so represents the most likely load from all consented discharges in the catchment.
 
 Table ", tab.count, " shows estimated load across the designated area by individual sectors. The minimum agricultural contribution is based on the maximum consented discharge value, while the maximum agricultural contribution uses minimum consented load. For the agricultural load, diffuse urban load and the unsewered residential properties load there is a single value only.")
     cat("\n", load.text1, "\n")
@@ -485,24 +485,7 @@ SEPERATE (SEctor Pollutant AppoRtionment for the AquaTic Environment) is a natio
 sep.yes <- FALSE
 sep.pholder.text <- "Outputs from the SEPERATE model are not available for this NVZ designation."
 
-if (nvz.type3 == 2 && nvz.area >= 25) {
-    sep.yes <- TRUE
-    if (nvz.type2 == "C") {
-        sep.dat <- sep_cumulative[sep_cumulative$EA_WB_ID == nvz.wb, ]
-        sep.labs <- c("Agricultural", "Bank Erosion", "Urban Diffuse", "STW",
-                      "Storm Tank", "Sceptic Tank", "CSO", "Direct Deposition", 
-                      "Groundwater", "Waterbody Total")
-    } 
-    
-    if (nvz.type2 == "WB") { 
-        sep.dat <- sep_local[sep_local$EA_WB_ID == nvz.wb, ]
-        sep.labs <- c("Agricultural", "Bank Erosion", "Urban Diffuse", "STW",
-                  "Storm Tank", "Sceptic Tank", "CSO", "Direct Deposition",
-                  "Waterbody Total")
-    }
-}
-
-if (nvz.type3 == 1 && nvz.area >= 25) {
+if (nvz.area >= 25) {
     if (nvz.type2 == "C" && nvz.wb %in% sep_cycle1.us$EA_WB_ID) {
         sep.yes <- TRUE
         sep.dat <- sep_cumulative[sep_cumulative$EA_WB_ID == nvz.wb, ]
@@ -566,8 +549,8 @@ if (sep.yes) {
 
 SIMCAT (SIMulated CATchment) is a well-established river water quality model with a long history of use in the UK. It has recently been incorporated into a source apportionment framework, SAGIS (Source Apportionment Geographical Information System), to allow apportionment of a range of pollutants to various sectors, including agriculture. For catchment designations we provide the nitrate as N concentration SIMCAT predicts at the farthest downstream point of the designation and the proportion of that concentration from diffuse sources[^6].
 
-```{r simcat, echo = FALSE, resutls = "asis"}
-if (exists("simcat.conc")) {
+```{r simcat, echo = FALSE, results = "asis"}
+if (exists("simcat.conc") && nvz.area >= 20) {
     if (!is.na(simcat.conc)) {
         tab.count <- TabCount(tab.count)
         simcat <- c(simcat.conc, simcat.prop * 100)
@@ -590,7 +573,7 @@ if (exists("simcat.conc")) {
 
 ## Land cover & livestock
 
-We have used land cover and livestock information as part of the method to derive this designation. It is used to drive the NEAP N model[^3] and the estimate of urban N load which are both input to the land use model. We take our land cover and livestock data from the 2014 Defra June agricultural survey[^7]. We have included the data below for this designation.
+We have used land cover and livestock information as part of the method to derive this designation. It is used to drive the NEAP N model[^3] and the estimate of urban N load which are both input to the land use model. We take our land cover and livestock data from the 2014 Defra June agricultural survey[^7]. We have included the data below for this designation. 
 
 ```{r lc_plot, echo = FALSE, results = "asis", fig.cap = "Landcover area by category from 2014 Defra agricultural survey", fig.height = 3, fig.width = 6}
 fig.count <- FigCount(fig.count)
@@ -617,7 +600,7 @@ tab.count <- TabCount(tab.count)
 livestock <- c(count.cows, count.sheep, count.pigs, 
                count.poultry, count.other)
 livestock <- data.frame(Count = livestock)
-row.names(livestock) <- c("Cattle", "Sheep", "Pigs", "Polutry",
+row.names(livestock) <- c("Cattle", "Sheep", "Pigs", "Poultry",
                           "Other livestock")
 kable(livestock, caption = "Count of livestock within NVZ designation from 2014 Defra agricultural survey")
 ```
@@ -654,12 +637,13 @@ The purpose the workshops was to discuss any proposed NVZ designations where the
 
 ## Appendix 1 - Sample point time series graphs
 
-This page has been left intetionally blank.
+This page has been left intentionally blank.
 
 \newpage
 
 ```{r all_smpt_plots, echo = FALSE, fig.width = 6, fig.height = 4.1, results = "asis", fig.keep = "all"}
-for (i in 1:length(mult.graph)){
+if (length(all.smpts >= 1)) {
+    for (i in 1:length(mult.graph)){
     cat("\n Figure A", i, ": ", all.smpts[i], " - ", all.smpts.names[i], sep = "")
     cat("\n")
     cat("\n")
@@ -667,12 +651,15 @@ for (i in 1:length(mult.graph)){
     plot.new()
     grid.raster(img)
     cat("\n")
-}
+    }
+} else{cat("There are no samples points with sufficient monitoring data within this NVZ")}
 ```
 
 \newpage  
 
 ## Appendix 2 - Discharge constent conditions
+
+We present two figures for load from consented discharges (points sources). The maximum value is based on discharge consent conditions (the conditions consented discharges may not legally exceed). Therefore the maximum value represents the maximum possible legal load emitted from each discharge. The minimum value is based on information from flow and water quality monitoring and represents the most likely load from each discharge. Where there is not flow and water quality monitoring in place the minimum and maximum loads will be the same.
 
 ``` {r dischrages_table, echo = FALSE, results = "asis"}
 source.table <- source.table[, -1]
