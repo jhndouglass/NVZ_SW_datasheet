@@ -71,7 +71,7 @@ TabCount <- function(ii) {
 
 nvzs <- read.csv("DatasheetExport.txt",
                  stringsAsFactors = FALSE)
-nvzs <- nvzs[34, ]
+#nvzs <- nvzs[2, ]
 #nvzs <- nvzs[nvzs$NVZ_ID %in% pri, ]
 
 new.text <- read.csv("designation_new_text.csv", row.names = 1,
@@ -143,11 +143,11 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         fail.count <- nvz.curr$X2017_Main_Fails_in_WB + nvz.curr$X2017_trib_Fails_in_WB
         fail.count.upstream <- nvz.curr$X2017_Upstream_Main_River_Fails + nvz.curr$X2017_Upstream_trib_River_Fails + fail.count
         if (fail.count == 0) {
-            fail.count.text <- "are no polluted sample points"
+            fail.count.text <- "are currently no polluted sample points"
         } else{
             if (fail.count > 1) {
-                fail.count.text <- paste0("are ", fail.count, " polluted sample points")
-            } else{fail.count.text <- "is one polluted sample point"}
+                fail.count.text <- paste0("are currently ", fail.count, " polluted sample points")
+            } else{fail.count.text <- "is currently one polluted sample point"}
         }
         if (fail.count.upstream == 0) {
             fail.count.text.upstream <- "no polluted sample points"
@@ -363,7 +363,7 @@ for (nvz in unique(nvzs$NVZ_ID)) {
 
     ## Mod/Mon confidence
     if (mon.2017 == 0) {
-        mon.change.text.long <- "We did not use monitoring evidence in making this designation."
+        mon.change.text.long <- "We did not use monitoring evidence in proposing this designation."
     } else {
         mon.conf.text <- switch(as.character(mon.2017),
                                 "1" = "Based on our assessment of monitoring data we have high confidence that the water is not polluted.",
@@ -377,7 +377,7 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     }
 
     if (mod.2017 == 0) {
-        mod.change.text.long <- "We did not use modelling evidence in making this designation."
+        mod.change.text.long <- "We did not use modelling evidence in proposing this designation, because the proposed NVZ is smaller than the minimum size that we can apply the land use model with confidence."
     } else {
         mod.conf.text <- switch(as.character(mod.2017),
                                 "1" = "Based on our modelling assessement we have high confidence that the water is not polluted.",
@@ -390,10 +390,16 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         mod.change.text.long <- paste0("Our modelling assessment shows that water quality in this NVZ has ", mod.change.text, " in the 2017 NVZ review period compared to the previous NVZ review. ", mod.conf.text)
     }
 
+    ## Extra bit of text to make it clear that dedesignation is not appropriate
+    dedes.text <- NULL
+    if (mon.2017 <= 3 && mod.2017 <= 3 && (tolower(nvz.type1) == "existing" || tolower(nvz.type1) == "modified")) {
+        dedes.text <- "Despite current evidence suggesting the proposed designation is not affected by pollution, we must have high confidence that a designation will  not become affected by pollution in the future before a designation may be removed. In this case the designation has not met the criteria for de-designation."
+    }
+
     ## get text to explain current 95th percentile estiamtes
     if (tolower(mon.type) == "weibull/qr") {
-        curr.est.text <- "the green bar represents the shows the current 95^th^ percentile, the green shaded areas show the uncertainty in the current 95^th^ percentile, we have high confidence that the current 95^th^ percentile lies within the light green shaded area and moderate confidence that the current 95^th^ percentile lies within the dark green shaded area"
-    } else  {curr.est.text <- "the left most dashed blue line represents mid-2015. Where is it crosses the dark blue line is the current 95^th^ percentile"
+        curr.est.text <- "The green bar shows the current 95^th^ percentile. The green shaded areas show the uncertainty in the current 95^th^ percentile, we have high confidence that the current 95^th^ percentile lies within the light green shaded area and moderate confidence that the current 95^th^ percentile lies within the dark green shaded area"
+    } else  {curr.est.text <- "The left most dashed blue line represents mid-2015, where it crosses the dark blue line is the current 95^th^ percentile"
     }
 
     ## this is done very verbosely...
