@@ -42,7 +42,7 @@ This document contains a summary of the evidence used to designate NVZ `r nvz.id
 
 `r additional.info` 
 
-`r nvz.name.short` is `r nvz.type1.text` designation. `r nvz.mod.text` There `r fail.count.text` in the waterbody that designates this NVZ, and, in total, `r fail.count.text.upstream` in the entire NVZ including the designating waterbody and any area upstream of the designating waterbody. `r mon.change.text.long` `r mod.change.text.long` `r nvz.des.text`
+`r nvz.name.short` is `r nvz.type1.text` `r nvz.type2.text` designation. `r nvz.mod.text` There `r fail.count.text` in the waterbody that designates this NVZ, and, in total, `r fail.count.text.upstream` in the entire NVZ including the designating waterbody and any area upstream of the designating waterbody. `r mon.change.text.long` `r mod.change.text.long` `r nvz.des.text`
 
 The contribution of agriculture to the observed nitrate pollution in this NVZ has been assessed and we are confident that agriculture is an important contributor to nitrate pollution.
 
@@ -135,7 +135,7 @@ fig.count <- FigCount(fig.count)
 tab.count <- TabCount(tab.count)
 ```
 
-Designations under the surface water method use a combination of monitored and modelled information.  Water quality data from our monitoring and modelling assessments are put into one of six classes, where enough data is available, that reflects how  confident we are that the 95^th^ percentile will exceed 11.3 mgl^-1^. When we combine the monitoring and modelled data, we use the following matrix (figure `r fig.count`) to identify those waters that are affected by pollution or could be affected by pollution. The combinations marked in red indicate a new designation should be recommended where there is not an existing NVZ designation. Where there is already an NVZ designation, the designation is continued unless there is sufficient evidence for de-designation. 
+Designations under the surface water method use a combination of monitored and modelled information.  Water quality data from our monitoring and modelling assessments are put into one of six classes, where enough data is available, that reflects how  confident we are that the 95^th^ percentile will exceed 11.3 mgl^-1^. We combine the monitoring and modelled data using the matrix shown in figure `r fig.count` to identify those waters that are affected by pollution or could be affected by pollution. The combinations marked in red indicate a new designation should be recommended where there is not an existing NVZ designation (an 'X' indicates that extra checks should be undertaken before a designation is proposed). Where there is already an NVZ designation, the designation is continued unless there is sufficient evidence for de-designation. 
 
 ```{r matrix, echo = FALSE, fig.height = 3, fig.width = 3, results = "asis", fig.cap = "Evidence matrix used to determine if waterbody is subject to nitrate pollution"}
 
@@ -184,7 +184,7 @@ kable(scores.tab, caption = "Matrix scores for the last three NVZ reviews")
 ```
 
 
-`r nvz.name.short` is `r nvz.type1.text` designation. `r nvz.mod.text` `r mon.change.text.long` `r mod.change.text.long` `r nvz.des.text` 
+`r nvz.name.short` is `r nvz.type1.text` `r nvz.type2.text` designation. `r nvz.mod.text` `r mon.change.text.long` `r mod.change.text.long` `r nvz.des.text` 
 
 `r dedes.text`
 
@@ -212,7 +212,7 @@ Figure `r fig.count` shows the area covered by this NVZ.
 tab.count <- TabCount(tab.count)
 
 mon.yes <- FALSE
-mon.pholder.text <- paste0("Monitoring evidence was not used in this designation. There were not any monitoing points with sufficent data in the designation waterbody. Table ", tab.count, " will contain NA (Not Available) values")
+mon.pholder.text <- paste0("Monitoring evidence was not used in this designation. There were not any monitoring points with sufficient data in the designation waterbody. Table ", tab.count, " will contain NA (Not Available) values")
 
 if (mon.2017 != 0) {
     mon.yes <- TRUE
@@ -262,7 +262,7 @@ Moderate confidence lower and upper bounds for trend
 
 : Summary of monitoring evidence
 
-There `r fail.count.text` in the waterbody that designates this NVZ, and, in total, `r fail.count.text.upstream` in the entire NVZ including the designating waterbody and any area upstream of the designating waterbody.
+There `r fail.count.text` in the waterbody that designates this NVZ, and, in total, `r fail.count.text.upstream` in the entire NVZ including the designating waterbody and any area upstream of the designating waterbody. This is a `r nvz.type2.text` designation, only monitoring points relevant to a `r nvz.type2.text` designation are used in table `r tab.count`, although all monitoring points are used in the counts at the top of table `r tab.count`.
 
 ```{r mon_plot, echo = FALSE, results = "asis", fig.width = 6, fig.height = 6, fig.cap = "TIN as N time series for worst sample point in designating waterbody"}
 if (mon.yes) {
@@ -510,7 +510,7 @@ if (nvz.area >= 25) {
 if (sep.yes) {
     tab.count <- TabCount(tab.count)
     fig.count <- FigCount(fig.count)
-    sep.labels.text <- paste0("Table ",  tab.count, " shows the load SEPARATE estimates is generated persector. Figure ", fig.count, " shows the same data expressed as a percentage of the total load. Note that for main river designations data is provided for the entire upstream area, while for tributary designations only data from the designating waterbody is provided.")
+    sep.labels.text <- paste0("Table ",  tab.count, " shows the load SEPARATE estimates is generated per sector. Figure ", fig.count, " shows the same data expressed as a percentage of the total load. Note that for main river designations data is provided for the entire upstream area, while for tributary designations only data from the designating waterbody is provided.")
     cat("\n", sep.labels.text, "\n")
 } else {cat("\n", sep.pholder.text, "\n")}
 ```
@@ -658,7 +658,7 @@ if (length(all.smpts >= 1)) {
     grid.raster(img)
     cat("\n")
     }
-} else{cat("There are no samples points with sufficient monitoring data within this NVZ")}
+} else{cat("There are no monitoring points with sufficient monitoring data within this NVZ")}
 ```
 
 \newpage  

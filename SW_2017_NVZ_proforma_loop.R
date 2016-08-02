@@ -30,7 +30,7 @@ LinesGraph <- function(concs) {
     conc.text.plot <- c("High confidence upper bound",
                         "Moderate confidence upper bound",
                         "Land use model 95th percentile TIN as N concentration",
-                        "Moderate condfidence lower bound",
+                        "Moderate confidence lower bound",
                         "High confidence lower bound")
     palette <- c("red", "chartreuse4", "deepskyblue4", "gray45", "chartreuse1",
                  "deepskyblue")
@@ -71,7 +71,7 @@ TabCount <- function(ii) {
 
 nvzs <- read.csv("DatasheetExport.txt",
                  stringsAsFactors = FALSE)
-#nvzs <- nvzs[2, ]
+#nvzs <- nvzs[443:444, ]
 #nvzs <- nvzs[nvzs$NVZ_ID %in% pri, ]
 
 new.text <- read.csv("designation_new_text.csv", row.names = 1,
@@ -234,11 +234,11 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         fail.count <- nvz.curr$X2017_Main_Fails_in_WB + nvz.curr$X2017_trib_Fails_in_WB
         fail.count.upstream <- nvz.curr$X2017_Upstream_Main_River_Fails + nvz.curr$X2017_Upstream_trib_River_Fails + fail.count
         if (fail.count == 0) {
-            fail.count.text <- "are no polluted sample points"
+            fail.count.text <- "are currently no polluted sample points"
         } else{
             if (fail.count > 1) {
-                fail.count.text <- paste0("are ", fail.count, " polluted sample points")
-            } else{fail.count.text <- "is one polluted sample point"}
+                fail.count.text <- paste0("are currently ", fail.count, " polluted sample points")
+            } else{fail.count.text <- "is currently one polluted sample point"}
         }
         if (fail.count.upstream == 0) {
             fail.count.text.upstream <- "no polluted sample points"
@@ -394,6 +394,9 @@ for (nvz in unique(nvzs$NVZ_ID)) {
     dedes.text <- NULL
     if (mon.2017 <= 3 && mod.2017 <= 3 && (tolower(nvz.type1) == "existing" || tolower(nvz.type1) == "modified")) {
         dedes.text <- "Despite current evidence suggesting the proposed designation is not affected by pollution, we must have high confidence that a designation will  not become affected by pollution in the future before a designation may be removed. In this case the designation has not met the criteria for de-designation."
+    }
+    if (mon.2017 == 0 && mod.2017 == 0 && (tolower(nvz.type1) == "existing" || tolower(nvz.type1) == "modified")) {
+        dedes.text <- "Despite neither the monitoring and modelling lines of evidence being available, we must have high confidence that a designation is not currently polluted and will  not become affected by pollution in the future before a designation may be removed. In this case the designation has not met the criteria for de-designation."
     }
 
     ## get text to explain current 95th percentile estiamtes
