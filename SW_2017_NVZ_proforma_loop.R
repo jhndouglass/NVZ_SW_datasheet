@@ -67,11 +67,13 @@ TabCount <- function(ii) {
 
 ## EXECUTED STATEMENTS----------------------------------------------------------
 #pri <- read.csv("priority _NVZ.csv", stringsAsFactors = FALSE)
-#pri <- pri[, 1]
+pri <- read.csv("jd_check_nvzs.csv", stringsAsFactors = FALSE)
+#pri <- c(481, 555)
 
 nvzs <- read.csv("DatasheetExport.txt",
                  stringsAsFactors = FALSE)
-#nvzs <- nvzs[443:444, ]
+#nvzs <- nvzs[414, ]
+nvzs <- nvzs[nvzs$NVZ_ID %in% pri$NVZ.ID, ]
 #nvzs <- nvzs[nvzs$NVZ_ID %in% pri, ]
 
 new.text <- read.csv("designation_new_text.csv", row.names = 1,
@@ -172,6 +174,7 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         mod.2009 <- nvz.curr$X2009_Main_Mod_Class
         mod.2013 <- nvz.curr$X2013_Main_Mod_Class
         mod.2017 <- nvz.curr$X2017_Main_Mod_Class
+        mon.curr.2017 <- nvz.curr$Main_Current_Class
         mon.conc <- round(nvz.curr$Main_Current_est, 2)
         mon.conc.u95 <- round(nvz.curr$Main_Current_u90, 2)
         mon.conc.l95 <- round(nvz.curr$Main_Current_l90, 2)
@@ -263,6 +266,7 @@ for (nvz in unique(nvzs$NVZ_ID)) {
         mod.2009 <- nvz.curr$X2009_WB_Mod_Class
         mod.2013 <- nvz.curr$X2013_WB_Model_Class
         mod.2017 <- nvz.curr$X2017_WB_Model_Class
+        mon.curr.2017 <- nvz.curr$Trib_Current_Class
         mon.conc <- round(nvz.curr$Trib_Current_Est, 2)
         mon.conc.u95 <- round(nvz.curr$Trib_Current_u90, 2)
         mon.conc.l95 <- round(nvz.curr$Trib_Current_l90, 2)

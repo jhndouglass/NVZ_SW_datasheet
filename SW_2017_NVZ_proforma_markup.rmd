@@ -241,7 +241,7 @@ Most polluted sample point in the designating
 waterbody                                               `r worst`
 
 Current monitored 95^th^ percentile 
-concentration (class)                                   `r paste0(mon.conc, " mgl^-1^ (", mon.2017, ")")`
+concentration (class)                                   `r paste0(mon.conc, " mgl^-1^ (", mon.curr.2017, ")")`
 
 High confidence lower and upper bounds for current 
 monitored 95^th^ percentile concentration               `r mon.conc.l95` mgl^-1^ - `r mon.conc.u95`  mgl^-1^
@@ -494,7 +494,7 @@ if (nvz.area >= 25) {
         sep.yes <- TRUE
         sep.dat <- sep_cumulative[sep_cumulative$EA_WB_ID == nvz.wb, ]
         sep.labs <- c("Agricultural", "Bank Erosion", "Urban Diffuse", "STW",
-                      "Storm Tank", "Sceptic Tank", "CSO", "Direct Deposition", 
+                      "Storm Tank", "Septic Tank", "CSO", "Direct Deposition", 
                       "Groundwater", "Waterbody Total")
     } 
     
@@ -502,7 +502,7 @@ if (nvz.area >= 25) {
         sep.yes <- TRUE
         sep.dat <- sep_local[sep_local$EA_WB_ID == nvz.wb, ]
         sep.labs <- c("Agricultural", "Bank Erosion", "Urban Diffuse", "STW",
-                  "Storm Tank", "Sceptic Tank", "CSO", "Direct Deposition",
+                  "Storm Tank", "Septic Tank", "CSO", "Direct Deposition",
                   "Waterbody Total")
     }
 }
@@ -674,7 +674,7 @@ cap <- paste0("Summary of sources of nitrogen compounds within
                        NVZ ", nvz.id)
 set.alignment('left', row.names = NULL)
 pandoc.table(source.table, caption = cap, justify = "left",
-             split.cells = 7)
+             split.cells = 5)
 ```
 
 \newpage
