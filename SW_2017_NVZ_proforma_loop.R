@@ -67,13 +67,17 @@ TabCount <- function(ii) {
 
 ## EXECUTED STATEMENTS----------------------------------------------------------
 #pri <- read.csv("priority _NVZ.csv", stringsAsFactors = FALSE)
-pri <- read.csv("jd_check_nvzs.csv", stringsAsFactors = FALSE)
+#pri <- read.csv("jd_check_nvzs.csv", stringsAsFactors = FALSE)
 #pri <- c(481, 555)
 
-nvzs <- read.csv("DatasheetExport.txt",
+#nvzs <- read.csv("DatasheetExport.txt",
+#                 stringsAsFactors = FALSE)
+
+nvzs <- read.csv("DatasheetExport_CB19.txt",
                  stringsAsFactors = FALSE)
-#nvzs <- nvzs[414, ]
-nvzs <- nvzs[nvzs$NVZ_ID %in% pri$NVZ.ID, ]
+
+nvzs <- nvzs[16, ]
+#nvzs <- nvzs[nvzs$NVZ_ID %in% pri$NVZ.ID, ]
 #nvzs <- nvzs[nvzs$NVZ_ID %in% pri, ]
 
 new.text <- read.csv("designation_new_text.csv", row.names = 1,
@@ -93,12 +97,18 @@ sep_cumulative <- read.csv("seperate_cumulative.csv")
 sep_cycle1 <- read.csv("seperate_cycle1_list.csv")
 sep_cycle1.us <- read.csv("seperate_cycle1_list_us.csv")
 
-source.app <- read.csv("SourceApp.txt",
+#source.app <- read.csv("SourceApp.txt",
+#                       stringsAsFactors = FALSE)
+
+source.app <- read.csv("SourceApp_CB19.txt",
                        stringsAsFactors = FALSE)
 
 smpts <- read.csv("sample_points_in_nvz.txt", stringsAsFactors = FALSE)
 
-sources <- read.csv("MassBalance_individual_loads.txt",
+#sources <- read.csv("MassBalance_individual_loads.txt",
+#                    stringsAsFactors = FALSE)
+
+sources <- read.csv("MassBalance_individual_loads_CB19.txt",
                     stringsAsFactors = FALSE)
 
 status <- read.csv("NVZ_status.txt", stringsAsFactors = FALSE)
